@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Recommendations | CareerPath AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: block;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 11px 12px;
+            margin: 3px 0;
+            border-radius: 9px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: 700;
+        }
+
+        .sidebar-bottom {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .theme-btn,
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            color: #4b5563;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .theme-btn:hover,
+        .logout-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 32px;
+        }
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* CAREER SUMMARY */
+
+        .career-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .career-card h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .career-card p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .career-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .info-pill {
+            padding: 8px 13px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* PROJECT SECTION */
+
+        .projects-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .projects-card h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .section-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .project-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+            transition: 0.2s;
+            background: #ffffff;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .project-number {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin-bottom: 13px;
+        }
+
+        .project-card h3 {
+            font-size: 17px;
+            margin-bottom: 9px;
+        }
+
+        .project-description {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .project-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 7px;
+        }
+
+        .level {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 15px;
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 16px;
+        }
+
+        .skill-tag {
+            padding: 6px 9px;
+            background: #f3f4f6;
+            color: #374151;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .gap-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 14px;
+        }
+
+        .gap-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .gap-tag {
+            padding: 6px 9px;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .general-gap {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .loading,
+        .empty-message {
+            color: #9ca3af;
+            font-size: 14px;
+            padding: 22px 0;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 14px;
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        .action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .action-btn {
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .action-btn:hover {
+            background: #e0e7ff;
+        }
+
+        /* DARK MODE */
+
+        body.dark-theme {
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        body.dark-theme .sidebar,
+        body.dark-theme .career-card,
+        body.dark-theme .projects-card,
+        body.dark-theme .project-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+
+        body.dark-theme .nav-item,
+        body.dark-theme .theme-btn,
+        body.dark-theme .logout-btn {
+            color: #d1d5db;
+        }
+
+        body.dark-theme .nav-item:hover,
+        body.dark-theme .theme-btn:hover,
+        body.dark-theme .logout-btn:hover {
+            background: #374151;
+            color: #ffffff;
+        }
+
+        body.dark-theme .nav-item.active {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .nav-title,
+        body.dark-theme .page-header p,
+        body.dark-theme .career-card p,
+        body.dark-theme .section-description,
+        body.dark-theme .project-description,
+        body.dark-theme .project-label {
+            color: #9ca3af;
+        }
+
+        body.dark-theme .sidebar-bottom {
+            border-color: #374151;
+        }
+
+        body.dark-theme .info-pill {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .project-number {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .level,
+        body.dark-theme .skill-tag {
+            background: #374151;
+            color: #d1d5db;
+        }
+
+        body.dark-theme .gap-section {
+            border-color: #374151;
+        }
+
+        body.dark-theme .gap-tag {
+            background: #450a0a;
+            border-color: #7f1d1d;
+            color: #fecaca;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Career<span>Path</span> AI
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Overview
+            </div>
+
+            <a href="/static/dashboard.html"
+               class="nav-item">
+                🏠 Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Analyze
+            </div>
+
+            <a href="/static/resume.html"
+               class="nav-item">
+                📄 Resume Analyzer
+            </a>
+
+            <a href="/static/career_explorer.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_explorer.html'; return false;">
+                💼 Career Explorer
+            </a>
+
+            <a href="/static/job_description.html"
+               class="nav-item">
+                🔍 Job Description
+            </a>
+
+            <a href="/static/skill_gap.html"
+               class="nav-item"
+               onclick="window.location.href='/static/skill_gap.html'; return false;">
+                🧩 Skill Gap Analysis
+            </a>
+
+            <a href="/static/resume_improvement.html"
+               class="nav-item">
+                ✨ Resume Improvement
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Build
+            </div>
+
+            <a href="/static/learning_roadmap.html"
+               class="nav-item"
+               onclick="window.location.href='/static/learning_roadmap.html'; return false;">
+                🗺️ Learning Roadmap
+            </a>
+
+            <a href="/static/project_recommendations.html"
+               class="nav-item active"
+               onclick="window.location.href='/static/project_recommendations.html'; return false;">
+                🚀 Project Recommendations
+            </a>
+
+            <a href="/static/learning_resources.html"
+               class="nav-item"
+               onclick="window.location.href='/static/learning_resources.html'; return false;">
+                📚 Learning Resources
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Practice
+            </div>
+
+            <a href="/static/career_coach.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_coach.html'; return false;">
+                🤖 AI Career Coach
+            </a>
+
+            <a href="/static/interview.html"
+               class="nav-item"
+               onclick="window.location.href='/static/interview.html'; return false;">
+                🎤 Interview Preparation
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Track
+            </div>
+
+            <a href="/static/progress.html"
+               class="nav-item"
+               onclick="window.location.href='/static/progress.html'; return false;">
+                📊 Progress
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <button id="themeToggle"
+                    class="theme-btn"
+                    onclick="toggleTheme()">
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html"
+               class="nav-item">
+                👤 Profile
+            </a>
+
+            <a href="#"
+               class="nav-item">
+                ⚙️ Settings
+            </a>
+
+            <button class="logout-btn"
+                    onclick="logoutUser()">
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="page-header">
+
+            <h1>
+                🚀 Project Recommendations
+            </h1>
+
+            <p>
+                Build practical projects that strengthen your skills and directly address your career gaps.
+            </p>
+
+        </div>
+
+
+        <!-- CAREER SUMMARY -->
+
+        <section class="career-card">
+
+            <h2 id="careerTitle">
+                Personalized Project Recommendations
+            </h2>
+
+            <p id="careerDescription">
+                CareerPath AI recommends projects based on your target career and detected skill gaps.
+            </p>
+
+            <div class="career-info">
+
+                <span class="info-pill"
+                      id="careerPill">
+                    Career: Not selected
+                </span>
+
+                <span class="info-pill"
+                      id="projectCountPill">
+                    0 Projects
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECTS -->
+
+        <section class="projects-card">
+
+            <h2>
+                💡 Recommended Projects
+            </h2>
+
+            <p class="section-description">
+                These projects are selected to help you gain practical experience and strengthen the skills required for your target career.
+            </p>
+
+            <div id="projectList"
+                 class="project-grid">
+
+                <div class="loading">
+                    Loading your personalized project recommendations...
+                </div>
+
+            </div>
+
+
+            <div class="action-row">
+
+                <a href="/static/learning_roadmap.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/learning_roadmap.html'; return false;">
+                    🗺️ View Learning Roadmap
+                </a>
+
+                <a href="/static/learning_resources.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/learning_resources.html'; return false;">
+                    📚 Find Learning Resources
+                </a>
+
+                <a href="/static/interview.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/interview.html'; return false;">
+                    🎤 Practice Interviews
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ==============================
+       LOGIN
+    ============================== */
+
+    function checkLogin() {
+
+        const user =
+            localStorage.getItem(
+                "careerPathUser"
+            );
+
+        if (!user) {
+
+            window.location.href =
+                "/static/login.html";
+
+        }
+
+    }
+
+
+    /* ==============================
+       LOGOUT
+    ============================== */
+
+    function logoutUser() {
+
+        localStorage.removeItem(
+            "careerPathUser"
+        );
+
+        localStorage.removeItem(
+            "careerPathProfile"
+        );
+
+        window.location.href =
+            "/static/login.html";
+
+    }
+
+
+    /* ==============================
+       THEME
+    ============================== */
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem(
+                "careerPathTheme"
+            ) || "light";
+
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
+            );
+
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains(
+                "dark-theme"
+            );
+
+
+        const nextTheme =
+            isDark
+                ? "light"
+                : "dark";
+
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+
+        applyTheme();
+
+    }
+
+
+    /* ==============================
+       LOCAL STORAGE
+    ============================== */
+
+    function getProfileData() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "careerPathProfile"
+                ) || "{}"
+            );
+
+        } catch {
+
+            return {};
+
+        }
+
+    }
+
+
+    function getResumeData() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "resumeAnalysis"
+                ) || "{}"
+            );
+
+        } catch {
+
+            return {};
+
+        }
+
+    }
+
+
+    function getTargetCareer() {
+
+        return (
+            localStorage.getItem(
+                "careerPathCareer"
+            ) ||
+            localStorage.getItem(
+                "recommendedCareer"
+            ) ||
+            ""
+        );
+
+    }
+
+
+    /* ==============================
+       LOAD PROJECTS
+    ============================== */
+
+    async function loadProjects() {
+
+        const projectList =
+            document.getElementById(
+                "projectList"
+            );
+
+
+        const profileData =
+            getProfileData();
+
+        const resumeData =
+            getResumeData();
+
+        const savedCareer =
+            getTargetCareer();
+
+
+        /*
+         * If project recommendations were already
+         * saved, display them immediately.
+         */
+
+        try {
+
+            const savedProjects =
+                JSON.parse(
+                    localStorage.getItem(
+                        "careerPathProjects"
+                    ) || "null"
+                );
+
+
+            if (
+                savedProjects &&
+                Array.isArray(
+                    savedProjects.recommended_projects
+                ) &&
+                savedProjects.recommended_projects.length > 0
+            ) {
+
+                displayProjects(
+                    savedProjects,
+                    savedCareer
+                );
+
+                return;
+
+            }
+
+        } catch {
+
+            console.log(
+                "No saved project recommendations found."
+            );
+
+        }
+
+
+        /*
+         * The complete CareerPath workflow needs
+         * resume text.
+         */
+
+        if (!resumeData.text) {
+
+            projectList.innerHTML = "";
+
+            const message =
+                document.createElement(
+                    "div"
+                );
+
+            message.className =
+                "empty-message";
+
+            message.textContent =
+                "Please analyze your resume first. Your personalized project recommendations will appear here.";
+
+            projectList.appendChild(
+                message
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/careerpath/analyze",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            profile:
+                                profileData,
+
+                            resume_text:
+                                resumeData.text
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Backend returned HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "CareerPath workflow:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                throw new Error(
+                    "CareerPath workflow failed."
+                );
+
+            }
+
+
+            const workflow =
+                result.workflow ||
+                {};
+
+
+            const careerAnalysis =
+                workflow.career_analysis ||
+                {};
+
+
+            const projectRecommendations =
+                workflow.project_recommendations ||
+                {};
+
+
+            const career =
+                careerAnalysis.recommended_career ||
+                savedCareer ||
+                "Career Path";
+
+
+            /*
+             * Save career.
+             */
+
+            localStorage.setItem(
+                "careerPathCareer",
+                career
+            );
+
+
+            /*
+             * Save project recommendations
+             * for the Progress page and future visits.
+             */
+
+            localStorage.setItem(
+                "careerPathProjects",
+                JSON.stringify(
+                    projectRecommendations
+                )
+            );
+
+
+            displayProjects(
+                projectRecommendations,
+                career
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Project Recommendation Error:",
+                error
+            );
+
+
+            projectList.innerHTML = "";
+
+
+            const errorBox =
+                document.createElement(
+                    "div"
+                );
+
+            errorBox.className =
+                "error";
+
+            errorBox.textContent =
+                "Unable to generate project recommendations. Please make sure your resume has been analyzed and try again.";
+
+            projectList.appendChild(
+                errorBox
+            );
+
+        }
+
+    }
+
+
+    /* ==============================
+       DISPLAY PROJECTS
+    ============================== */
+
+    function displayProjects(
+        projectRecommendations,
+        career
+    ) {
+
+        const projectList =
+            document.getElementById(
+                "projectList"
+            );
+
+
+        const projects =
+            projectRecommendations &&
+            Array.isArray(
+                projectRecommendations.recommended_projects
+            )
+                ? projectRecommendations.recommended_projects
+                : [];
+
+
+        document.getElementById(
+            "careerTitle"
+        ).textContent =
+            career +
+            " Project Recommendations";
+
+
+        document.getElementById(
+            "careerDescription"
+        ).textContent =
+            "CareerPath AI projects selected to strengthen the skills needed for your target career.";
+
+
+        document.getElementById(
+            "careerPill"
+        ).textContent =
+            "Career: " +
+            career;
+
+
+        document.getElementById(
+            "projectCountPill"
+        ).textContent =
+            projects.length +
+            (
+                projects.length === 1
+                    ? " Project"
+                    : " Projects"
+            );
+
+
+        projectList.innerHTML =
+            "";
+
+
+        if (projects.length === 0) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+            empty.className =
+                "empty-message";
+
+            empty.textContent =
+                "No project recommendations were generated yet.";
+
+            projectList.appendChild(
+                empty
+            );
+
+            return;
+
+        }
+
+
+        projects.forEach(
+            (project, index) => {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+                card.className =
+                    "project-card";
+
+
+                const number =
+                    document.createElement(
+                        "div"
+                    );
+
+                number.className =
+                    "project-number";
+
+                number.textContent =
+                    index + 1;
+
+
+                const title =
+                    document.createElement(
+                        "h3"
+                    );
+
+                title.textContent =
+                    project.title ||
+                    "Recommended Project";
+
+
+                const description =
+                    document.createElement(
+                        "p"
+                    );
+
+                description.className =
+                    "project-description";
+
+                description.textContent =
+                    project.description ||
+                    "Build this project to strengthen your practical career skills.";
+
+
+                const levelLabel =
+                    document.createElement(
+                        "div"
+                    );
+
+                levelLabel.className =
+                    "project-label";
+
+                levelLabel.textContent =
+                    "Difficulty";
+
+
+                const level =
+                    document.createElement(
+                        "span"
+                    );
+
+                level.className =
+                    "level";
+
+                level.textContent =
+                    project.level ||
+                    "Recommended";
+
+
+                const skillsLabel =
+                    document.createElement(
+                        "div"
+                    );
+
+                skillsLabel.className =
+                    "project-label";
+
+                skillsLabel.textContent =
+                    "Skills";
+
+
+                const skillList =
+                    document.createElement(
+                        "div"
+                    );
+
+                skillList.className =
+                    "skill-list";
+
+
+                const skills =
+                    Array.isArray(
+                        project.skills
+                    )
+                        ? project.skills
+                        : [];
+
+
+                if (skills.length > 0) {
+
+                    skills.forEach(
+                        skill => {
+
+                            const tag =
+                                document.createElement(
+                                    "span"
+                                );
+
+                            tag.className =
+                                "skill-tag";
+
+                            tag.textContent =
+                                skill;
+
+                            skillList.appendChild(
+                                tag
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    const tag =
+                        document.createElement(
+                            "span"
+                        );
+
+                    tag.className =
+                        "skill-tag";
+
+                    tag.textContent =
+                        "Practical Development";
+
+                    skillList.appendChild(
+                        tag
+                    );
+
+                }
+
+
+                const gapSection =
+                    document.createElement(
+                        "div"
+                    );
+
+                gapSection.className =
+                    "gap-section";
+
+
+                const gapLabel =
+                    document.createElement(
+                        "div"
+                    );
+
+                gapLabel.className =
+                    "project-label";
+
+                gapLabel.textContent =
+                    "Addresses Skill Gaps";
+
+
+                const gapList =
+                    document.createElement(
+                        "div"
+                    );
+
+                gapList.className =
+                    "gap-list";
+
+
+                const matchingGaps =
+                    Array.isArray(
+                        project.matching_skill_gaps
+                    )
+                        ? project.matching_skill_gaps
+                        : [];
+
+
+                if (matchingGaps.length > 0) {
+
+                    matchingGaps.forEach(
+                        gap => {
+
+                            const tag =
+                                document.createElement(
+                                    "span"
+                                );
+
+                            tag.className =
+                                "gap-tag";
+
+                            tag.textContent =
+                                gap;
+
+                            gapList.appendChild(
+                                tag
+                            );
+
+                        }
+                    );
+
+                } else {
+
+                    const general =
+                        document.createElement(
+                            "span"
+                        );
+
+                    general.className =
+                        "general-gap";
+
+                    general.textContent =
+                        "General career development";
+
+                    gapList.appendChild(
+                        general
+                    );
+
+                }
+
+
+                gapSection.appendChild(
+                    gapLabel
+                );
+
+                gapSection.appendChild(
+                    gapList
+                );
+
+
+                card.appendChild(
+                    number
+                );
+
+                card.appendChild(
+                    title
+                );
+
+                card.appendChild(
+                    description
+                );
+
+                card.appendChild(
+                    levelLabel
+                );
+
+                card.appendChild(
+                    level
+                );
+
+                card.appendChild(
+                    skillsLabel
+                );
+
+                card.appendChild(
+                    skillList
+                );
+
+                card.appendChild(
+                    gapSection
+                );
+
+
+                projectList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ==============================
+       INITIALIZE
+    ============================== */
+
+    checkLogin();
+
+    applyTheme();
+
+    loadProjects();
+
+</script>
+
+</body>
+</html>

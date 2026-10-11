@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Gap Analysis | CareerPath AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: block;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 11px 12px;
+            margin: 3px 0;
+            border-radius: 9px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: 700;
+        }
+
+        .sidebar-bottom {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .theme-btn,
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            color: #4b5563;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .theme-btn:hover,
+        .logout-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 32px;
+        }
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* TARGET CAREER */
+        .career-selector {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .career-selector label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .career-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        select {
+            flex: 1;
+            padding: 13px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #111827;
+            font-size: 14px;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #6366f1;
+        }
+
+        .analyze-btn {
+            border: none;
+            border-radius: 9px;
+            padding: 0 24px;
+            background: #4f46e5;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .analyze-btn:hover {
+            background: #4338ca;
+        }
+
+        /* SUMMARY */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 9px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .summary-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        /* READINESS */
+        .readiness-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            font-size: 18px;
+        }
+
+        .percentage {
+            font-weight: 800;
+            color: #4f46e5;
+            font-size: 20px;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #4f46e5;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .readiness-text {
+            margin-top: 12px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* TWO COLUMNS */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .skill-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .skill-card h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .skill-card-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .skill-tag {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .matched {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .missing {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .empty-message {
+            color: #9ca3af;
+            font-size: 14px;
+            padding: 18px 0;
+        }
+
+        /* RECOMMENDATIONS */
+        .recommendations {
+            margin-top: 22px;
+        }
+
+        .recommendation-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .recommendation {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .recommendation h3 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .recommendation p {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .priority {
+            white-space: nowrap;
+            padding: 7px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .high {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .low {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            text-decoration: none;
+            border-radius: 9px;
+            padding: 11px 16px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .action-btn:hover {
+            background: #e0e7ff;
+        }
+
+        /* LOADING */
+        .loading {
+            display: none;
+            margin-top: 15px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .error {
+            display: none;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            padding: 13px;
+            border-radius: 9px;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        /* DARK MODE */
+        body.dark-theme {
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        body.dark-theme .sidebar,
+        body.dark-theme .career-selector,
+        body.dark-theme .summary-card,
+        body.dark-theme .readiness-card,
+        body.dark-theme .skill-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+
+        body.dark-theme .nav-item,
+        body.dark-theme .theme-btn,
+        body.dark-theme .logout-btn {
+            color: #d1d5db;
+        }
+
+        body.dark-theme .nav-item:hover,
+        body.dark-theme .theme-btn:hover,
+        body.dark-theme .logout-btn:hover {
+            background: #374151;
+            color: #ffffff;
+        }
+
+        body.dark-theme .nav-item.active {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .nav-title,
+        body.dark-theme .summary-label,
+        body.dark-theme .page-header p,
+        body.dark-theme .skill-card-description,
+        body.dark-theme .readiness-text,
+        body.dark-theme .summary-sub,
+        body.dark-theme .recommendation p {
+            color: #9ca3af;
+        }
+
+        body.dark-theme .sidebar-bottom {
+            border-color: #374151;
+        }
+
+        body.dark-theme select {
+            background: #111827;
+            border-color: #4b5563;
+            color: #f9fafb;
+        }
+
+        body.dark-theme .progress-track {
+            background: #374151;
+        }
+
+        body.dark-theme .recommendation {
+            border-color: #374151;
+        }
+
+        body.dark-theme .error {
+            background: #450a0a;
+            border-color: #7f1d1d;
+            color: #fecaca;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .app {
+                display: block;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .career-row {
+                flex-direction: column;
+            }
+
+            .analyze-btn {
+                padding: 13px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            Career<span>Path</span> AI
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Overview</div>
+
+            <a href="/static/dashboard.html" class="nav-item">
+                🏠 Dashboard
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Analyze</div>
+
+            <a href="/static/resume.html" class="nav-item">
+                📄 Resume Analyzer
+            </a>
+
+            <a href="/static/career_explorer.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_explorer.html'; return false;">
+                💼 Career Explorer
+            </a>
+
+
+            <a href="/static/job_description.html"
+               class="nav-item"
+               onclick="window.location.href='/static/job_description.html'; return false;">
+                🔍 Job Description
+            </a>
+
+            <a href="/static/skill_gap.html"
+               class="nav-item active"
+               onclick="window.location.href='/static/skill_gap.html'; return false;">
+                🧩 Skill Gap Analysis
+            </a>
+
+            <a href="/static/resume_improvement.html"
+               class="nav-item">
+                ✨ Resume Improvement
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Build</div>
+
+            <a href="/static/learning_roadmap.html"
+               class="nav-item">
+                🗺️ Learning Roadmap
+            </a>
+
+            <a href="/static/project_recommendations.html"
+               class="nav-item">
+                🚀 Project Recommendations
+            </a>
+
+            <a href="/static/learning_resources.html"
+               class="nav-item"
+               onclick="window.location.href='/static/learning_resources.html'; return false;">
+                📚 Learning Resources
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Practice</div>
+
+            <a href="/static/career_coach.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_coach.html'; return false;">
+                🤖 AI Career Coach
+            </a>
+
+            <a href="/static/interview.html"
+               class="nav-item"
+               onclick="window.location.href='/static/interview.html'; return false;">
+                🎤 Interview Preparation
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Track</div>
+
+            <a href="/static/progress.html"
+               class="nav-item"
+               onclick="window.location.href='/static/progress.html'; return false;">
+                📊 Progress
+            </a>
+        </div>
+
+        <div class="sidebar-bottom">
+
+            <button id="themeToggle"
+                    class="theme-btn"
+                    onclick="toggleTheme()">
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html" class="nav-item">
+                👤 Profile
+            </a>
+
+            <a href="#" class="nav-item">
+                ⚙️ Settings
+            </a>
+
+            <button class="logout-btn" onclick="logoutUser()">
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <div class="page-header">
+            <h1>📊 Skill Gap Analysis</h1>
+            <p>
+                Compare your current skills with the skills required for your target career.
+            </p>
+        </div>
+
+
+        <!-- CAREER SELECTOR -->
+        <section class="career-selector">
+
+            <label for="careerSelect">
+                Select Target Career
+            </label>
+
+            <div class="career-row">
+
+                <select id="careerSelect">
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="Software Developer">Software Developer</option>
+                    <option value="Machine Learning Engineer">
+                        Machine Learning Engineer
+                    </option>
+                    <option value="AI Engineer">AI Engineer</option>
+                    <option value="Full Stack Developer">
+                        Full Stack Developer
+                    </option>
+                </select>
+
+                <button class="analyze-btn" onclick="analyzeSkillGap()">
+                    Analyze Skill Gap
+                </button>
+
+            </div>
+
+            <div id="loading" class="loading">
+                Analyzing your skills...
+            </div>
+
+            <div id="error" class="error"></div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Career Readiness
+                </div>
+
+                <div class="summary-value" id="readinessValue">
+                    0%
+                </div>
+
+                <div class="summary-sub">
+                    Overall match
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Required Skills
+                </div>
+
+                <div class="summary-value" id="requiredValue">
+                    0
+                </div>
+
+                <div class="summary-sub">
+                    Target career skills
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Matched Skills
+                </div>
+
+                <div class="summary-value" id="matchedValue">
+                    0
+                </div>
+
+                <div class="summary-sub">
+                    Skills you already have
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Missing Skills
+                </div>
+
+                <div class="summary-value" id="missingValue">
+                    0
+                </div>
+
+                <div class="summary-sub">
+                    Skills to develop
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- READINESS -->
+        <section class="readiness-card">
+
+            <div class="section-heading">
+
+                <h2>
+                    Career Readiness
+                </h2>
+
+                <span class="percentage" id="readinessPercent">
+                    0%
+                </span>
+
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="readinessBar"></div>
+            </div>
+
+            <p class="readiness-text" id="readinessText">
+                Run the analysis to calculate your career readiness.
+            </p>
+
+        </section>
+
+
+        <!-- SKILL LISTS -->
+        <section class="content-grid">
+
+            <div class="skill-card">
+
+                <h2>✅ Matched Skills</h2>
+
+                <p class="skill-card-description">
+                    Skills detected in your profile or resume that match the target career.
+                </p>
+
+                <div id="matchedSkills" class="skill-list">
+                    <div class="empty-message">
+                        No analysis performed yet.
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <h2>❌ Missing Skills</h2>
+
+                <p class="skill-card-description">
+                    Important skills you should develop for your selected career.
+                </p>
+
+                <div id="missingSkills" class="skill-list">
+                    <div class="empty-message">
+                        No analysis performed yet.
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECOMMENDATIONS -->
+        <section class="skill-card recommendations">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>🎯 Recommended Focus</h2>
+
+                    <p class="skill-card-description">
+                        Prioritize these skills to reduce your career gap.
+                    </p>
+                </div>
+
+            </div>
+
+            <div id="recommendations" class="recommendation-list">
+
+                <div class="empty-message">
+                    Run the analysis to see personalized recommendations.
+                </div>
+
+            </div>
+
+            <div class="action-row">
+
+                <a href="/static/learning_resources.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/learning_resources.html'; return false;">
+                    📚 Explore Learning Resources
+                </a>
+
+                <a href="/static/interview.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/interview.html'; return false;">
+                    🎤 Practice Interviews
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ==============================
+       LOGIN
+    ============================== */
+
+    function checkLogin() {
+
+        const user =
+            localStorage.getItem("careerPathUser");
+
+        if (!user) {
+
+            window.location.href =
+                "/static/login.html";
+
+        }
+
+    }
+
+
+    /* ==============================
+       LOGOUT
+    ============================== */
+
+    function logoutUser() {
+
+        localStorage.removeItem("careerPathUser");
+        localStorage.removeItem("careerPathProfile");
+
+        window.location.href =
+            "/static/login.html";
+
+    }
+
+
+    /* ==============================
+       THEME
+    ============================== */
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem("careerPathTheme") || "light";
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains("dark-theme");
+
+        const nextTheme =
+            isDark ? "light" : "dark";
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+        applyTheme();
+
+    }
+
+
+    /* ==============================
+       SKILL GAP ANALYSIS
+    ============================== */
+
+    async function analyzeSkillGap() {
+
+    const career =
+        document.getElementById("careerSelect").value;
+
+    const loading =
+        document.getElementById("loading");
+
+    const error =
+        document.getElementById("error");
+
+    loading.style.display = "block";
+    error.style.display = "none";
+
+    try {
+
+        const profileData =
+            JSON.parse(
+                localStorage.getItem("careerPathProfile") || "{}"
+            );
+
+        const resumeData =
+            JSON.parse(
+                localStorage.getItem("resumeAnalysis") || "{}"
+            );
+
+        /*
+         * Build current skills from the student's
+         * stored profile/resume information.
+         */
+        let currentSkills = [];
+
+        if (Array.isArray(profileData.skills)) {
+
+            currentSkills.push(
+                ...profileData.skills
+            );
+
+        } else if (typeof profileData.skills === "string") {
+
+            currentSkills.push(
+                ...profileData.skills
+                    .split(",")
+                    .map(skill => skill.trim())
+                    .filter(Boolean)
+            );
+
+        }
+
+        /*
+         * If the resume analyzer already detected
+         * skills, use those as well.
+         */
+        if (Array.isArray(resumeData.skills)) {
+
+            currentSkills.push(
+                ...resumeData.skills
+            );
+
+        }
+
+        /*
+         * Remove duplicate skills.
+         */
+        currentSkills = [
+            ...new Set(
+                currentSkills.map(
+                    skill => String(skill).trim()
+                ).filter(Boolean)
+            )
+        ];
+
+
+        const response =
+            await fetch(
+                "/api/skill-gap/analyze",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        recommended_career:
+                            career,
+
+                        current_skills:
+                            currentSkills
+
+                    })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Backend returned HTTP " +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Skill Gap API Response:",
+            data
+        );
+
+
+        if (!data.success) {
+
+            throw new Error(
+                "Skill gap analysis failed."
+            );
+
+        }
+
+
+        /*
+         * Your backend wraps the actual analysis
+         * inside the "analysis" property.
+         */
+        const analysis =
+            data.analysis || {};
+
+
+        displayResults(
+            analysis,
+            career
+        );
+
+
+    } catch (err) {
+
+        console.error(
+            "Skill Gap Error:",
+            err
+        );
+
+        error.textContent =
+            "Unable to analyze your skill gap. Please make sure your resume/profile contains skills.";
+
+        error.style.display =
+            "block";
+
+
+    } finally {
+
+        loading.style.display =
+            "none";
+
+    }
+
+}
+
+    /* ==============================
+       DISPLAY RESULTS
+    ============================== */
+
+    function displayResults(data, career) {
+
+        const required =
+            data.required_skills ||
+            data.required ||
+            [];
+
+        const matched =
+            data.matched_skills ||
+            data.matched ||
+            [];
+
+        const missing =
+            data.missing_skills ||
+            data.missing ||
+            [];
+
+
+        let readiness =
+            data.readiness_percentage;
+
+        if (readiness === undefined) {
+
+            readiness =
+                required.length > 0
+                    ? Math.round(
+                        (matched.length / required.length) * 100
+                    )
+                    : 0;
+
+        }
+
+
+        readiness =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    Number(readiness) || 0
+                )
+            );
+
+
+        document.getElementById(
+            "readinessValue"
+        ).textContent =
+            readiness + "%";
+
+
+        document.getElementById(
+            "readinessPercent"
+        ).textContent =
+            readiness + "%";
+
+
+        document.getElementById(
+            "requiredValue"
+        ).textContent =
+            required.length;
+
+
+        document.getElementById(
+            "matchedValue"
+        ).textContent =
+            matched.length;
+
+
+        document.getElementById(
+            "missingValue"
+        ).textContent =
+            missing.length;
+
+
+        document.getElementById(
+            "readinessBar"
+        ).style.width =
+            readiness + "%";
+
+
+        const readinessText =
+            document.getElementById(
+                "readinessText"
+            );
+
+
+        if (readiness >= 80) {
+
+            readinessText.textContent =
+                "Excellent match. You are strongly aligned with this career.";
+
+        } else if (readiness >= 60) {
+
+            readinessText.textContent =
+                "Good progress. Focus on the remaining skills to become more career-ready.";
+
+        } else if (readiness >= 40) {
+
+            readinessText.textContent =
+                "You have a foundation, but several important skills still need development.";
+
+        } else {
+
+            readinessText.textContent =
+                "Your skill gap is currently significant. Follow a structured learning plan to improve.";
+
+        }
+
+
+        renderSkillTags(
+            "matchedSkills",
+            matched,
+            "matched"
+        );
+
+
+        renderSkillTags(
+            "missingSkills",
+            missing,
+            "missing"
+        );
+
+
+        renderRecommendations(
+            missing
+        );
+
+
+        localStorage.setItem(
+            "careerPathReadiness",
+            readiness
+        );
+
+        localStorage.setItem(
+            "careerPathCareer",
+            career
+        );
+
+    }
+
+
+    /* ==============================
+       SKILL TAGS
+    ============================== */
+
+    function renderSkillTags(
+        elementId,
+        skills,
+        className
+    ) {
+
+        const container =
+            document.getElementById(
+                elementId
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (!skills || skills.length === 0) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className =
+                "empty-message";
+
+            empty.textContent =
+                className === "matched"
+                    ? "No matching skills detected yet."
+                    : "No missing skills detected.";
+
+            container.appendChild(empty);
+
+            return;
+
+        }
+
+
+        skills.forEach(skill => {
+
+            const tag =
+                document.createElement("span");
+
+            tag.className =
+                "skill-tag " +
+                className;
+
+            tag.textContent =
+                skill;
+
+            container.appendChild(tag);
+
+        });
+
+    }
+
+
+    /* ==============================
+       RECOMMENDATIONS
+    ============================== */
+
+    function renderRecommendations(
+        missingSkills
+    ) {
+
+        const container =
+            document.getElementById(
+                "recommendations"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (!missingSkills ||
+            missingSkills.length === 0) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className =
+                "empty-message";
+
+            empty.textContent =
+                "Great job! No major skill gaps were detected.";
+
+            container.appendChild(empty);
+
+            return;
+
+        }
+
+
+        missingSkills
+            .slice(0, 8)
+            .forEach((skill, index) => {
+
+                const item =
+                    document.createElement("div");
+
+                item.className =
+                    "recommendation";
+
+
+                const content =
+                    document.createElement("div");
+
+
+                const title =
+                    document.createElement("h3");
+
+                title.textContent =
+                    skill;
+
+
+                const description =
+                    document.createElement("p");
+
+                description.textContent =
+                    "Develop this skill to improve your alignment with the selected career.";
+
+
+                content.appendChild(title);
+                content.appendChild(description);
+
+
+                const badge =
+                    document.createElement("span");
+
+                badge.className =
+                    "priority " +
+                    (
+                        index < 3
+                            ? "high"
+                            : index < 6
+                                ? "medium"
+                                : "low"
+                    );
+
+
+                badge.textContent =
+                    index < 3
+                        ? "HIGH PRIORITY"
+                        : index < 6
+                            ? "MEDIUM"
+                            : "LOW";
+
+
+                item.appendChild(content);
+                item.appendChild(badge);
+
+
+                container.appendChild(item);
+
+            });
+
+    }
+
+
+    /* ==============================
+       LOAD SAVED CAREER
+    ============================== */
+
+    function loadSavedCareer() {
+
+        const savedCareer =
+            localStorage.getItem(
+                "careerPathCareer"
+            );
+
+        if (!savedCareer) {
+            return;
+        }
+
+
+        const select =
+            document.getElementById(
+                "careerSelect"
+            );
+
+
+        const optionExists =
+            Array.from(
+                select.options
+            ).some(
+                option =>
+                    option.value === savedCareer
+            );
+
+
+        if (optionExists) {
+
+            select.value =
+                savedCareer;
+
+        }
+
+    }
+
+
+    /* ==============================
+       INITIALIZE
+    ============================== */
+
+    checkLogin();
+
+    applyTheme();
+
+    loadSavedCareer();
+
+</script>
+
+</body>
+</html>

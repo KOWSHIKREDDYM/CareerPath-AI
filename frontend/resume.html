@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerPath AI - Resume Analysis</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+
+        .resume-page {
+            min-height: calc(100vh - 72px);
+            padding: 60px 8%;
+            background: #f7f9fc;
+        }
+
+        .resume-container {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(30, 60, 120, 0.08);
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .resume-header h1 {
+            font-size: 36px;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .resume-header p {
+            color: #667085;
+        }
+
+        .upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 50px 30px;
+            text-align: center;
+            background: #f8faff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .upload-box:hover {
+            border-color: #2563eb;
+            background: #f1f5ff;
+        }
+
+        .upload-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .upload-box h3 {
+            margin-bottom: 8px;
+        }
+
+        .upload-box p {
+            color: #667085;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .browse-button {
+            display: inline-block;
+            padding: 12px 22px;
+            background: #2563eb;
+            color: white;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .file-name {
+            margin-top: 20px;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .analyze-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .analyze-button:hover {
+            background: #1d4ed8;
+        }
+
+        .analyze-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .info-box {
+            margin-top: 25px;
+            padding: 18px;
+            background: #eff6ff;
+            border-radius: 10px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+
+            100% {
+                transform: rotate(360deg);
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            CareerPath AI
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+
+    </header>
+
+
+    <main class="resume-page">
+
+        <div class="resume-container">
+
+            <div class="resume-header">
+
+                <div class="badge">
+                    Step 2 of 3
+                </div>
+
+                <h1>
+                    Upload Your Resume
+                </h1>
+
+                <p>
+                    CareerPath AI will analyze your resume
+                    and identify your skills, education,
+                    projects and experience.
+                </p>
+
+            </div>
+
+
+            <div
+                class="upload-box"
+                onclick="document.getElementById('resumeFile').click()"
+            >
+
+                <div class="upload-icon">
+                    📄
+                </div>
+
+                <h3>
+                    Upload your resume
+                </h3>
+
+                <p>
+                    PDF format recommended
+                </p>
+
+
+                <label
+                    class="browse-button"
+                    for="resumeFile"
+                    onclick="event.stopPropagation()"
+                >
+                    Choose Resume
+                </label>
+
+
+                <input
+                    type="file"
+                    id="resumeFile"
+                    class="file-input"
+                    accept=".pdf"
+                >
+
+
+                <div
+                    id="fileName"
+                    class="file-name"
+                ></div>
+
+            </div>
+
+
+            <button
+                id="analyzeButton"
+                class="analyze-button"
+                disabled
+            >
+                Analyze Resume →
+            </button>
+
+
+            <div class="loading" id="loading">
+
+                <div class="spinner"></div>
+
+                <p>
+                    Analyzing your resume...
+                </p>
+
+            </div>
+
+
+            <div class="info-box">
+
+                🔒 Your resume is used only for
+                career analysis in this application.
+
+            </div>
+
+        </div>
+
+
+<script src="/static/auth.js"></script>
+
+    <script>
+
+        const loggedInUser = requireLogin();
+
+        if (!loggedInUser) {
+           throw new Error("User is not logged in.");
+       }
+        const resumeFile =
+            document.getElementById("resumeFile");
+
+        const fileName =
+            document.getElementById("fileName");
+
+        const analyzeButton =
+            document.getElementById("analyzeButton");
+
+        const loading =
+            document.getElementById("loading");
+
+
+        resumeFile.addEventListener(
+            "change",
+            function () {
+
+                if (resumeFile.files.length > 0) {
+
+                    const file =
+                        resumeFile.files[0];
+
+                    fileName.textContent =
+                        "Selected: " + file.name;
+
+                    analyzeButton.disabled = false;
+
+                }
+
+            }
+        );
+
+
+        analyzeButton.addEventListener(
+            "click",
+            async function () {
+
+                if (!resumeFile.files.length) {
+                    return;
+                }
+
+                loading.style.display = "block";
+
+                analyzeButton.disabled = true;
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "file",
+                    resumeFile.files[0]
+                );
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/resume/analyze",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    console.log(result);
+
+
+                    localStorage.setItem(
+                        "resumeAnalysis",
+                        JSON.stringify(result)
+                    );
+
+
+                    window.location.href =
+                        "/static/dashboard.html";
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "Something went wrong while analyzing the resume."
+                    );
+
+                    analyzeButton.disabled = false;
+
+                } finally {
+
+                    loading.style.display = "none";
+
+                }
+
+            }
+        );
+
+    </script>
+   
+    </main>
+</div>
+  
+</body>
+
+</html>

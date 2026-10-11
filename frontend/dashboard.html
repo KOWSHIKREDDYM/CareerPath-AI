@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerPath AI - Dashboard</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+   <div class="app-layout">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <span>CareerPath</span> AI
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+                <p>OVERVIEW</p>
+
+                <a href="/static/dashboard.html" class="nav-item active">
+                    🏠 Dashboard
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>ANALYZE</p>
+
+                <a href="/static/resume.html" class="nav-item">
+                    📄 Resume Analyzer
+                </a>
+
+                <a
+                   href="/static/career_explorer.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/career_explorer.html'; return false;"
+                >
+                   💼 Career Explorer
+                </a>
+
+                <a href="/static/job_description.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/job_description.html'; return false;">
+                   🔍 Job Description
+                </a>
+
+                <a href="/static/skill_gap.html"
+                    class="nav-item"
+                    onclick="window.location.href='/static/skill_gap.html'; return false;">
+                    📊 Skill Gap Analysis
+                </a>
+
+                <a href="/static/resume_improvement.html"
+                    class="nav-item"
+                    onclick="window.location.href='/static/resume_improvement.html'; return false;">
+                    ✨ Resume Improvement
+</a>
+            </div>
+
+            <div class="nav-section">
+                <p>BUILD</p>
+
+                <a href="/static/learning_roadmap.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/learning_roadmap.html'; return false;">
+                   🗺️ Learning Roadmap
+                </a>
+
+                <a href="/static/project_recommendations.html"
+                    class="nav-item"
+                    onclick="window.location.href='/static/project_recommendations.html'; return false;">
+                    🚀 Project Recommendations
+                </a>
+
+                <a
+                   href="/static/learning_resources.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/learning_resources.html'; return false;"
+               >
+                   📚 Learning Resources
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>PRACTICE</p>
+
+                <a
+                   href="/static/career_coach.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/career_coach.html'; return false;"
+                >
+                   🤖 AI Career Coach
+                </a>
+
+                <a
+                    href="/static/interview.html"
+                    class="nav-item"
+                    onclick="window.location.href='/static/interview.html'; return false;"
+                >
+                    🎤 Interview Preparation
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>TRACK</p>
+
+                <a
+                   href="/static/progress.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/progress.html'; return false;"
+                >
+                   📊 Progress
+                </a>
+            </div>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                onclick="toggleTheme()"
+            >
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html" class="nav-item">
+                👤 Profile
+            </a>
+
+            <a href="#" class="nav-item">
+                ⚙️ Settings
+            </a>
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logoutUser()"
+            >
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+    <main class="main-content">
+<header class="dashboard-header">
+
+    <div class="dashboard-brand">
+        CareerPath <span>AI</span>
+    </div>
+
+    <div class="dashboard-step">
+        Career Analysis Dashboard
+    </div>
+
+</header>
+
+
+<div class="dashboard-container">
+
+    <div class="dashboard-welcome">
+
+        <h1 id="welcomeMessage">
+            Welcome 👋
+        </h1>
+
+        <p>
+            Your AI-powered career analysis is ready.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- Resume Status -->
+
+        <div class="dashboard-card">
+
+            <span class="dashboard-status">
+                ✓ Resume Analyzed
+            </span>
+
+            <h2>
+                Resume Analysis
+            </h2>
+
+            <p id="resumeInfo">
+                Your resume has been successfully processed.
+            </p>
+
+        </div>
+
+
+        <!-- Career Recommendation -->
+
+        <div class="dashboard-card">
+
+            <h2>
+                Recommended Career
+            </h2>
+
+            <div
+                class="career"
+                id="careerName"
+            >
+                Analyzing...
+            </div>
+
+            <p>
+                Based on your profile and detected technical skills.
+            </p>
+
+            <div class="dashboard-progress-container">
+
+                <div class="dashboard-progress-label">
+
+                    <span>
+                        Career Readiness
+                    </span>
+
+                    <strong id="readinessValue">
+                        0%
+                    </strong>
+
+                </div>
+
+                <div class="dashboard-progress">
+                    <div
+                        class="dashboard-progress-bar"
+                        id="readinessBar"
+                    ></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Skills -->
+
+        <div class="dashboard-card dashboard-full">
+
+            <h2>
+                Skills Detected From Resume
+            </h2>
+
+            <div
+                class="skills"
+                id="skillsList"
+            >
+
+                <span class="empty-message">
+                    Detecting skills...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Skill Gap -->
+
+        <div class="dashboard-card">
+
+            <h2>
+                Skill Gap Analysis
+            </h2>
+
+            <div id="skillGapList">
+
+                <p class="empty-message">
+                    Analyzing skill gaps...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Learning Roadmap -->
+
+        <div class="dashboard-card">
+
+            <h2>
+                Personalized Learning Roadmap
+            </h2>
+
+            <div id="roadmapList">
+
+                <p class="empty-message">
+                    Generating learning roadmap...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Recommended Projects -->
+
+        <div class="dashboard-card dashboard-full">
+
+            <h2>
+                Recommended Projects
+            </h2>
+
+            <div id="projectList">
+
+                <p class="empty-message">
+                    Finding suitable projects...
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="dashboard-footer">
+
+        CareerPath AI · Agentic AI Career Guidance Platform · SDG 8
+
+    </div>
+
+</div>
+
+<script src="/static/auth.js"></script>
+
+<script>
+
+    // ============================================================
+    // GET DATA FROM LOCAL STORAGE
+    // ============================================================
+
+    const loggedInUser = requireLogin();
+
+    if (!loggedInUser) {
+        throw new Error("User is not logged in.");
+    }
+
+    // ============================================================
+    // LIGHT / DARK THEME
+    // ============================================================
+
+    function applyTheme() {
+        const savedTheme =
+            localStorage.getItem("careerPathTheme") || "light";
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+        }
+    }
+
+    function toggleTheme() {
+        const isDark =
+            document.body.classList.contains("dark-theme");
+
+        const nextTheme = isDark ? "light" : "dark";
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+        applyTheme();
+    }
+
+    applyTheme();
+
+    const profileData =
+        JSON.parse(
+            localStorage.getItem("careerPathProfile")
+        ) || {};
+
+
+    const resumeData =
+        JSON.parse(
+            localStorage.getItem("resumeAnalysis")
+        ) || {};
+
+
+    // ============================================================
+    // DISPLAY STUDENT NAME
+    // ============================================================
+
+    const displayName =
+        profileData.name || loggedInUser.name;
+
+    if (displayName) {
+
+        document.getElementById(
+            "welcomeMessage"
+        ).textContent =
+            "Welcome, " +
+            displayName +
+            " 👋";
+    }
+
+
+    // ============================================================
+    // DISPLAY RESUME INFORMATION
+    // ============================================================
+
+    if (resumeData.filename) {
+
+        document.getElementById(
+            "resumeInfo"
+        ).textContent =
+            resumeData.filename +
+            " · " +
+            resumeData.pages +
+            " page(s) analyzed successfully.";
+    }
+
+
+    // ============================================================
+    // BASIC SKILL DETECTION FROM RESUME
+    // ============================================================
+
+    if (resumeData.text) {
+
+        const text =
+            resumeData.text.toLowerCase();
+
+
+        const possibleSkills = [
+
+            "python",
+            "java",
+            "javascript",
+            "html",
+            "css",
+            "sql",
+
+            "machine learning",
+            "deep learning",
+
+            "artificial intelligence",
+            "generative ai",
+            "agentic ai",
+
+            "rag",
+
+            "fastapi",
+            "flask",
+            "django",
+
+            "tensorflow",
+            "pytorch",
+
+            "mongodb",
+
+            "git",
+            "github",
+
+            "react"
+        ];
+
+
+        const detectedSkills =
+            possibleSkills.filter(
+                skill => text.includes(skill)
+            );
+
+
+        const skillsList =
+            document.getElementById(
+                "skillsList"
+            );
+
+
+        if (detectedSkills.length > 0) {
+
+            skillsList.innerHTML = "";
+
+
+            detectedSkills.forEach(skill => {
+
+                const element =
+                    document.createElement("span");
+
+
+                element.className =
+                    "skill";
+
+
+                element.textContent =
+                    skill
+                        .split(" ")
+                        .map(word =>
+                            word.charAt(0).toUpperCase()
+                            + word.slice(1)
+                        )
+                        .join(" ");
+
+
+                skillsList.appendChild(
+                    element
+                );
+
+            });
+
+        } else {
+
+            skillsList.innerHTML =
+                '<span class="empty-message">No predefined skills detected.</span>';
+
+        }
+
+    }
+
+
+    // ============================================================
+    // RUN COMPLETE CAREERPATH AGENTIC WORKFLOW
+    // ============================================================
+
+    async function runCareerAdvisor() {
+
+
+        if (!resumeData.text) {
+
+            console.log(
+                "No resume text found."
+            );
+
+            return;
+        }
+
+
+        try {
+
+            console.log(
+                "Starting CareerPath AI workflow..."
+            );
+
+
+            // ----------------------------------------------------
+            // CALL BACKEND ORCHESTRATOR
+            // ----------------------------------------------------
+
+            const response =
+                await fetch(
+                    "/api/careerpath/analyze",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            profile:
+                                profileData,
+
+                            resume_text:
+                                resumeData.text
+
+                        })
+                    }
+                );
+
+
+            // ----------------------------------------------------
+            // CHECK HTTP RESPONSE
+            // ----------------------------------------------------
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Backend returned HTTP " +
+                    response.status
+                );
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "COMPLETE CAREERPATH WORKFLOW:",
+                result
+            );
+
+
+            // ----------------------------------------------------
+            // CHECK WORKFLOW SUCCESS
+            // ----------------------------------------------------
+
+            if (!result.success) {
+
+                console.error(
+                    "CareerPath workflow failed:",
+                    result
+                );
+
+                return;
+            }
+
+
+            // ====================================================
+            // IMPORTANT:
+            // workflow is defined INSIDE the function
+            // ====================================================
+
+            const workflow =
+                result.workflow;
+
+
+            if (!workflow) {
+
+                console.error(
+                    "Workflow data is missing."
+                );
+
+                return;
+            }
+
+
+            // ====================================================
+            // AGENT 1 — CAREER ADVISOR
+            // ====================================================
+
+            const careerAnalysis =
+                workflow.career_analysis;
+
+
+            if (careerAnalysis) {
+
+                const careerName =
+                    document.getElementById(
+                        "careerName"
+                    );
+
+
+                if (
+                    careerName &&
+                    careerAnalysis.recommended_career
+                ) {
+
+                    careerName.textContent =
+                        careerAnalysis.recommended_career;
+
+                    localStorage.setItem(
+                        "careerPathCareer",
+                        careerAnalysis.recommended_career
+                     );
+                }
+
+            }
+
+
+            // ====================================================
+            // AGENT 2 — SKILL GAP ANALYSIS
+            // ====================================================
+
+            const skillGap =
+                workflow.skill_gap_analysis;
+
+
+            console.log(
+                "Skill Gap Agent Result:",
+                skillGap
+            );
+
+
+            if (skillGap) {
+
+
+                // ------------------------------------------------
+                // Readiness percentage
+                // ------------------------------------------------
+
+                const readiness =
+                    Number(
+                        skillGap.readiness_percentage
+                    ) || 0;
+
+                // Save detected skills for Progress Tracking
+                const detectedSkills =
+                    skillGap.matched_skills || [];
+
+                localStorage.setItem(
+                    "careerPathSkills",
+                    JSON.stringify(detectedSkills)
+                ); 
+
+                const readinessValue =
+                    document.getElementById(
+                        "readinessValue"
+                    );
+
+
+                const readinessBar =
+                    document.getElementById(
+                        "readinessBar"
+                    );
+
+
+                if (readinessValue) {
+
+                    readinessValue.textContent =
+                        readiness + "%";
+                }
+
+
+                if (readinessBar) {
+
+                    readinessBar.style.width =
+                        Math.min(
+                            Math.max(
+                                readiness,
+                                0
+                            ),
+                            100
+                        ) + "%";
+                }
+
+                // Save readiness for Progress Tracking
+                localStorage.setItem(
+                  "careerPathReadiness",
+                   readiness
+                );
+
+                // ------------------------------------------------
+                // Missing skills
+                // ------------------------------------------------
+
+                const skillGapList =
+                    document.getElementById(
+                        "skillGapList"
+                    );
+
+
+                if (skillGapList) {
+
+                    skillGapList.innerHTML = "";
+
+
+                    const missingSkills =
+                        skillGap.missing_skills || [];
+
+
+                    if (
+                        missingSkills.length === 0
+                    ) {
+
+                        skillGapList.innerHTML =
+                            '<p class="empty-message">No major skill gaps identified.</p>';
+
+                    } else {
+
+                        missingSkills.forEach(
+                            skill => {
+
+                                const item =
+                                    document.createElement(
+                                        "div"
+                                    );
+
+
+                                item.className =
+                                    "roadmap-item";
+
+
+                                item.innerHTML = `
+                                    <strong>${skill}</strong>
+
+                                    <p>
+                                        Recommended skill to develop
+                                        for your target career.
+                                    </p>
+                                `;
+
+
+                                skillGapList.appendChild(
+                                    item
+                                );
+
+                            }
+                        );
+
+                    }
+
+                }
+
+            }
+
+
+            // ====================================================
+            // AGENT 3 — LEARNING ROADMAP
+            // ====================================================
+
+            const roadmap =
+                workflow.learning_roadmap;
+
+
+            console.log(
+                "Learning Roadmap Agent Result:",
+                roadmap
+            );
+
+            // Save roadmap data for Progress Tracking
+            localStorage.setItem(
+                "careerPathRoadmap",
+                JSON.stringify(roadmap || { roadmap: [] })
+            );
+
+            const roadmapList =
+                document.getElementById(
+                    "roadmapList"
+                );
+
+
+            if (roadmapList) {
+
+                roadmapList.innerHTML = "";
+
+
+                const roadmapItems =
+                    roadmap &&
+                    roadmap.roadmap
+                        ? roadmap.roadmap
+                        : [];
+
+
+                if (
+                    roadmapItems.length === 0
+                ) {
+
+                    roadmapList.innerHTML =
+                        '<p class="empty-message">No roadmap items generated.</p>';
+
+                } else {
+
+                    roadmapItems.forEach(
+                        item => {
+
+                            const roadmapItem =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            roadmapItem.className =
+                                "roadmap-item";
+
+
+                            roadmapItem.innerHTML = `
+                                <strong>
+                                    ${item.step} — ${item.skill}
+                                </strong>
+
+                                <p>
+                                    ${item.description}
+                                </p>
+
+                                <p>
+                                    Duration: ${item.duration}
+                                </p>
+                            `;
+
+
+                            roadmapList.appendChild(
+                                roadmapItem
+                            );
+
+                        }
+                    );
+
+                }
+
+            }
+
+
+            // ====================================================
+            // AGENT 4 — PROJECT RECOMMENDATION
+            // ====================================================
+
+            const projectRecommendations =
+                workflow.project_recommendations;
+
+
+            console.log(
+                "Project Recommendation Agent Result:",
+                projectRecommendations
+            );
+
+
+            const projectList =
+                document.getElementById(
+                    "projectList"
+                );
+
+
+            if (projectList) {
+
+                projectList.innerHTML = "";
+
+
+                const projects =
+                    projectRecommendations &&
+                    projectRecommendations.recommended_projects
+                        ? projectRecommendations.recommended_projects
+                        : [];
+
+
+                if (projects.length === 0) {
+
+                    projectList.innerHTML =
+                        '<p class="empty-message">No project recommendations generated.</p>';
+
+                } else {
+
+                    projects.forEach(
+                        project => {
+
+                            const projectItem =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            projectItem.className =
+                                "project-item";
+
+
+                            const matchingGaps =
+                                project.matching_skill_gaps || [];
+
+
+                            projectItem.innerHTML = `
+                                <strong>
+                                    ${project.title}
+                                </strong>
+
+                                <p>
+                                    ${project.description}
+                                </p>
+
+                                <p>
+                                    <strong>Level:</strong>
+                                    ${project.level}
+                                </p>
+
+                                <p>
+                                    <strong>Skills:</strong>
+                                    ${(project.skills || []).join(", ")}
+                                </p>
+
+                                <p>
+                                    <strong>
+                                        Addresses skill gaps:
+                                    </strong>
+
+                                    ${
+                                        matchingGaps.length > 0
+                                            ? matchingGaps.join(", ")
+                                            : "General career development"
+                                    }
+                                </p>
+                            `;
+
+
+                            projectList.appendChild(
+                                projectItem
+                            );
+
+                        }
+                    );
+
+                }
+
+            }
+
+
+            // ====================================================
+            // WORKFLOW COMPLETE
+            // ====================================================
+
+            console.log(
+                "CareerPath AI workflow completed successfully."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "CareerPath workflow error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ============================================================
+    // START WORKFLOW
+    // ============================================================
+
+    runCareerAdvisor();
+
+</script>
+    </main>
+   </div>
+</body>
+</html>

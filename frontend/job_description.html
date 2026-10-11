@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Job Description Analyzer | CareerPath AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: block;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 11px 12px;
+            margin: 3px 0;
+            border-radius: 9px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: 700;
+        }
+
+        .sidebar-bottom {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .theme-btn,
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            color: #4b5563;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .theme-btn:hover,
+        .logout-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 32px;
+        }
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        .input-card,
+        .result-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .input-card h2,
+        .result-card h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .card-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 17px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 250px;
+            resize: vertical;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #111827;
+            background: #ffffff;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #6366f1;
+        }
+
+        .input-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .resume-status {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .analyze-btn {
+            border: none;
+            border-radius: 9px;
+            padding: 12px 20px;
+            background: #4f46e5;
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .analyze-btn:hover {
+            background: #4338ca;
+        }
+
+        /* =========================
+           SUMMARY
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .summary-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .summary-sub {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* =========================
+           MATCH BAR
+        ========================= */
+
+        .match-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .match-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+
+        .match-heading h2 {
+            font-size: 18px;
+        }
+
+        .match-percent {
+            color: #4f46e5;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #4f46e5;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .match-text {
+            margin-top: 11px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* =========================
+           TWO COLUMNS
+        ========================= */
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .skill-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .skill-card h2 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .skill-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 17px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .skill-tag {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .matched {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .missing {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .empty-message {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RECOMMENDATIONS
+        ========================= */
+
+        .recommendation-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .recommendation {
+            border: 1px solid #e5e7eb;
+            border-radius: 11px;
+            padding: 15px;
+        }
+
+        .recommendation h3 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .recommendation p {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            padding: 13px;
+            border-radius: 9px;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        /* =========================
+           DARK MODE
+        ========================= */
+
+        body.dark-theme {
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        body.dark-theme .sidebar,
+        body.dark-theme .input-card,
+        body.dark-theme .result-card,
+        body.dark-theme .summary-card,
+        body.dark-theme .match-card,
+        body.dark-theme .skill-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+
+        body.dark-theme .nav-item,
+        body.dark-theme .theme-btn,
+        body.dark-theme .logout-btn {
+            color: #d1d5db;
+        }
+
+        body.dark-theme .nav-item:hover,
+        body.dark-theme .theme-btn:hover,
+        body.dark-theme .logout-btn:hover {
+            background: #374151;
+            color: #ffffff;
+        }
+
+        body.dark-theme .nav-item.active {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .nav-title,
+        body.dark-theme .page-header p,
+        body.dark-theme .card-description,
+        body.dark-theme .resume-status,
+        body.dark-theme .summary-label,
+        body.dark-theme .summary-sub,
+        body.dark-theme .match-text,
+        body.dark-theme .skill-description,
+        body.dark-theme .recommendation p {
+            color: #9ca3af;
+        }
+
+        body.dark-theme .sidebar-bottom {
+            border-color: #374151;
+        }
+
+        body.dark-theme textarea {
+            background: #111827;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+
+        body.dark-theme .progress-track {
+            background: #374151;
+        }
+
+        body.dark-theme .recommendation {
+            border-color: #374151;
+        }
+
+        body.dark-theme .matched {
+            background: #064e3b;
+            color: #a7f3d0;
+            border-color: #065f46;
+        }
+
+        body.dark-theme .missing {
+            background: #450a0a;
+            color: #fecaca;
+            border-color: #7f1d1d;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 760px) {
+
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Career<span>Path</span> AI
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Overview
+            </div>
+
+            <a href="/static/dashboard.html"
+               class="nav-item">
+                🏠 Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Analyze
+            </div>
+
+            <a href="/static/resume.html"
+               class="nav-item">
+                📄 Resume Analyzer
+            </a>
+
+            <a href="/static/career_explorer.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_explorer.html'; return false;">
+                💼 Career Explorer
+            </a>
+
+            <a href="/static/job_description.html"
+               class="nav-item active"
+               onclick="window.location.href='/static/job_description.html'; return false;">
+                🔍 Job Description
+            </a>
+
+            <a href="/static/skill_gap.html"
+               class="nav-item"
+               onclick="window.location.href='/static/skill_gap.html'; return false;">
+                📊 Skill Gap Analysis
+            </a>
+
+            <a href="/static/resume_improvement.html"
+               class="nav-item"
+                onclick="window.location.href='/static/resume_improvement.html'; return false;">
+                ✨ Resume Improvement
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Build
+            </div>
+
+            <a href="/static/learning_roadmap.html"
+               class="nav-item"
+               onclick="window.location.href='/static/learning_roadmap.html'; return false;">
+                🗺️ Learning Roadmap
+            </a>
+
+            <a href="/static/project_recommendations.html"
+               class="nav-item"
+               onclick="window.location.href='/static/project_recommendations.html'; return false;">
+                🚀 Project Recommendations
+            </a>
+
+            <a href="/static/learning_resources.html"
+               class="nav-item"
+               onclick="window.location.href='/static/learning_resources.html'; return false;">
+                📚 Learning Resources
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Practice
+            </div>
+
+            <a href="/static/career_coach.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_coach.html'; return false;">
+                🤖 AI Career Coach
+            </a>
+
+            <a href="/static/interview.html"
+               class="nav-item"
+               onclick="window.location.href='/static/interview.html'; return false;">
+                🎤 Interview Preparation
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Track
+            </div>
+
+            <a href="/static/progress.html"
+               class="nav-item"
+               onclick="window.location.href='/static/progress.html'; return false;">
+                📈 Progress
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <button id="themeToggle"
+                    class="theme-btn"
+                    onclick="toggleTheme()">
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html"
+               class="nav-item">
+                👤 Profile
+            </a>
+
+            <a href="#"
+               class="nav-item">
+                ⚙️ Settings
+            </a>
+
+            <button class="logout-btn"
+                    onclick="logoutUser()">
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+        <div class="page-header">
+
+            <h1>
+                💼 Job Description Analyzer
+            </h1>
+
+            <p>
+                Compare a job description with your resume and identify the skills you need to strengthen.
+            </p>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <section class="input-card">
+
+            <h2>
+                📋 Paste Job Description
+            </h2>
+
+            <p class="card-description">
+                Paste the complete job description below. CareerPath AI will compare its requirements with the skills detected in your resume.
+            </p>
+
+            <textarea
+                id="jobDescription"
+                placeholder="Paste the job description here...
+
+Example:
+We are looking for a Software Developer with experience in Java, Spring Boot, REST APIs, SQL, Git and AWS..."
+            ></textarea>
+
+
+            <div class="input-actions">
+
+                <div class="resume-status"
+                     id="resumeStatus">
+                    Checking your analyzed resume...
+                </div>
+
+                <button class="analyze-btn"
+                        onclick="analyzeJobDescription()">
+                    🔍 Analyze Job Description
+                </button>
+
+            </div>
+
+            <div id="error"></div>
+
+        </section>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Job Match
+                </div>
+
+                <div class="summary-value"
+                     id="matchValue">
+                    0%
+                </div>
+
+                <div class="summary-sub">
+                    Resume alignment
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Required Skills
+                </div>
+
+                <div class="summary-value"
+                     id="requiredValue">
+                    0
+                </div>
+
+                <div class="summary-sub">
+                    Detected in job
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Matched Skills
+                </div>
+
+                <div class="summary-value"
+                     id="matchedValue">
+                    0
+                </div>
+
+                <div class="summary-sub">
+                    Already present
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Missing Skills
+                </div>
+
+                <div class="summary-value"
+                     id="missingValue">
+                    0
+                </div>
+
+                <div class="summary-sub">
+                    Skills to improve
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MATCH -->
+
+        <section class="match-card">
+
+            <div class="match-heading">
+
+                <h2>
+                    🎯 Job Compatibility
+                </h2>
+
+                <span class="match-percent"
+                      id="matchPercent">
+                    0%
+                </span>
+
+            </div>
+
+            <div class="progress-track">
+
+                <div class="progress-fill"
+                     id="matchBar">
+                </div>
+
+            </div>
+
+            <p class="match-text"
+               id="matchText">
+                Paste a job description and run the analysis.
+            </p>
+
+        </section>
+
+
+        <!-- SKILLS -->
+
+        <section class="results-grid">
+
+            <div class="skill-card">
+
+                <h2>
+                    ✅ Matched Skills
+                </h2>
+
+                <p class="skill-description">
+                    Skills mentioned in the job description that are also present in your resume.
+                </p>
+
+                <div id="matchedSkills"
+                     class="skill-list">
+
+                    <span class="empty-message">
+                        No analysis performed yet.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <h2>
+                    ❌ Missing Skills
+                </h2>
+
+                <p class="skill-description">
+                    Important job requirements that were not detected in your resume.
+                </p>
+
+                <div id="missingSkills"
+                     class="skill-list">
+
+                    <span class="empty-message">
+                        No analysis performed yet.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECOMMENDATIONS -->
+
+        <section class="result-card">
+
+            <h2>
+                🎯 Recommended Focus
+            </h2>
+
+            <p class="card-description">
+                Prioritize these areas before applying or preparing for the role.
+            </p>
+
+            <div id="recommendations"
+                 class="recommendation-list">
+
+                <div class="empty-message">
+                    Your recommendations will appear here after analysis.
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* =========================
+       LOGIN
+    ========================= */
+
+    function checkLogin() {
+
+        const user =
+            localStorage.getItem(
+                "careerPathUser"
+            );
+
+        if (!user) {
+
+            window.location.href =
+                "/static/login.html";
+
+        }
+
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    function logoutUser() {
+
+        localStorage.removeItem(
+            "careerPathUser"
+        );
+
+        localStorage.removeItem(
+            "careerPathProfile"
+        );
+
+        window.location.href =
+            "/static/login.html";
+
+    }
+
+
+    /* =========================
+       THEME
+    ========================= */
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem(
+                "careerPathTheme"
+            ) || "light";
+
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
+            );
+
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains(
+                "dark-theme"
+            );
+
+
+        localStorage.setItem(
+            "careerPathTheme",
+            isDark
+                ? "light"
+                : "dark"
+        );
+
+
+        applyTheme();
+
+    }
+
+
+    /* =========================
+       RESUME
+    ========================= */
+
+    function getResumeText() {
+
+        try {
+
+            const resume =
+                JSON.parse(
+                    localStorage.getItem(
+                        "resumeAnalysis"
+                    ) || "{}"
+                );
+
+            return resume.text || "";
+
+        } catch {
+
+            return "";
+
+        }
+
+    }
+
+
+    function showResumeStatus() {
+
+        const resumeText =
+            getResumeText();
+
+        const status =
+            document.getElementById(
+                "resumeStatus"
+            );
+
+
+        if (resumeText) {
+
+            status.textContent =
+                "✅ Analyzed resume found. Ready to compare.";
+
+        } else {
+
+            status.textContent =
+                "⚠️ No analyzed resume found. Analyze your resume first.";
+
+        }
+
+    }
+
+
+    /* =========================
+       SKILL DATABASE
+    ========================= */
+
+    const SKILLS = [
+
+        "Python",
+        "Java",
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "React",
+        "Node.js",
+        "SQL",
+        "MongoDB",
+        "REST APIs",
+        "Git",
+        "GitHub",
+        "GitLab",
+        "Data Structures",
+        "Algorithms",
+        "Spring Boot",
+        "Microservices",
+        "AWS",
+        "Azure",
+        "Docker",
+        "Kubernetes",
+        "FastAPI",
+        "Flask",
+        "Django",
+        "Pandas",
+        "NumPy",
+        "Statistics",
+        "Machine Learning",
+        "Deep Learning",
+        "TensorFlow",
+        "PyTorch",
+        "Scikit-learn",
+        "Data Visualization",
+        "Generative AI",
+        "Artificial Intelligence",
+        "Agentic AI",
+        "LLM",
+        "RAG",
+        "MLOps",
+        "Model Deployment",
+        "Power BI",
+        "Tableau",
+        "Excel",
+        "C++",
+        "C",
+        "JUnit",
+        "Postman",
+        "CI/CD",
+        "Jenkins",
+        "Linux",
+        "Communication",
+        "Problem Solving"
+    ];
+
+
+    /* =========================
+       NORMALIZE
+    ========================= */
+
+    function normalizeText(text) {
+
+        return text
+            .toLowerCase()
+            .replace(/[^\w\s+#./-]/g, " ");
+
+    }
+
+
+    function containsSkill(text, skill) {
+
+        const normalized =
+            normalizeText(text);
+
+        const normalizedSkill =
+            normalizeText(skill);
+
+        return normalized.includes(
+            normalizedSkill
+        );
+
+    }
+
+
+    /* =========================
+       ANALYZE
+    ========================= */
+
+    function analyzeJobDescription() {
+
+        const jobDescription =
+            document.getElementById(
+                "jobDescription"
+            ).value.trim();
+
+
+        const error =
+            document.getElementById(
+                "error"
+            );
+
+
+        error.innerHTML =
+            "";
+
+
+        if (!jobDescription) {
+
+            error.innerHTML =
+                '<div class="error">Please paste a job description first.</div>';
+
+            return;
+
+        }
+
+
+        const resumeText =
+            getResumeText();
+
+
+        if (!resumeText) {
+
+            error.innerHTML =
+                '<div class="error">Please analyze your resume first so CareerPath AI can compare it with the job description.</div>';
+
+            return;
+
+        }
+
+
+        /*
+         * Detect skills mentioned in the job description.
+         */
+
+        const requiredSkills =
+            SKILLS.filter(
+                skill =>
+                    containsSkill(
+                        jobDescription,
+                        skill
+                    )
+            );
+
+
+        /*
+         * Compare detected job skills
+         * against resume text.
+         */
+
+        const matchedSkills =
+            requiredSkills.filter(
+                skill =>
+                    containsSkill(
+                        resumeText,
+                        skill
+                    )
+            );
+
+
+        const missingSkills =
+            requiredSkills.filter(
+                skill =>
+                    !containsSkill(
+                        resumeText,
+                        skill
+                    )
+            );
+
+
+        const matchPercentage =
+            requiredSkills.length > 0
+                ? Math.round(
+                    (
+                        matchedSkills.length /
+                        requiredSkills.length
+                    ) * 100
+                )
+                : 0;
+
+
+        displayResults(
+            requiredSkills,
+            matchedSkills,
+            missingSkills,
+            matchPercentage
+        );
+
+    }
+
+
+    /* =========================
+       DISPLAY RESULTS
+    ========================= */
+
+    function displayResults(
+        requiredSkills,
+        matchedSkills,
+        missingSkills,
+        percentage
+    ) {
+
+        document.getElementById(
+            "matchValue"
+        ).textContent =
+            percentage + "%";
+
+
+        document.getElementById(
+            "matchPercent"
+        ).textContent =
+            percentage + "%";
+
+
+        document.getElementById(
+            "requiredValue"
+        ).textContent =
+            requiredSkills.length;
+
+
+        document.getElementById(
+            "matchedValue"
+        ).textContent =
+            matchedSkills.length;
+
+
+        document.getElementById(
+            "missingValue"
+        ).textContent =
+            missingSkills.length;
+
+
+        document.getElementById(
+            "matchBar"
+        ).style.width =
+            percentage + "%";
+
+
+        const matchText =
+            document.getElementById(
+                "matchText"
+            );
+
+
+        if (percentage >= 80) {
+
+            matchText.textContent =
+                "Excellent alignment. Your resume covers most of the skills detected in this job description.";
+
+        } else if (percentage >= 60) {
+
+            matchText.textContent =
+                "Good alignment. Strengthen the missing skills before applying.";
+
+        } else if (percentage >= 40) {
+
+            matchText.textContent =
+                "Moderate alignment. Several important job requirements are missing from your resume.";
+
+        } else {
+
+            matchText.textContent =
+                "Low alignment. Review the missing skills and consider building relevant projects before applying.";
+
+        }
+
+
+        renderSkills(
+            "matchedSkills",
+            matchedSkills,
+            "matched",
+            "No matching skills detected."
+        );
+
+
+        renderSkills(
+            "missingSkills",
+            missingSkills,
+            "missing",
+            "No missing skills detected."
+        );
+
+
+        renderRecommendations(
+            missingSkills
+        );
+
+    }
+
+
+    /* =========================
+       RENDER SKILLS
+    ========================= */
+
+    function renderSkills(
+        elementId,
+        skills,
+        className,
+        emptyText
+    ) {
+
+        const container =
+            document.getElementById(
+                elementId
+            );
+
+
+        container.innerHTML =
+            "";
+
+
+        if (skills.length === 0) {
+
+            const empty =
+                document.createElement(
+                    "span"
+                );
+
+            empty.className =
+                "empty-message";
+
+            empty.textContent =
+                emptyText;
+
+            container.appendChild(
+                empty
+            );
+
+            return;
+
+        }
+
+
+        skills.forEach(
+            skill => {
+
+                const tag =
+                    document.createElement(
+                        "span"
+                    );
+
+                tag.className =
+                    "skill-tag " +
+                    className;
+
+                tag.textContent =
+                    skill;
+
+                container.appendChild(
+                    tag
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       RECOMMENDATIONS
+    ========================= */
+
+    function renderRecommendations(
+        missingSkills
+    ) {
+
+        const container =
+            document.getElementById(
+                "recommendations"
+            );
+
+
+        container.innerHTML =
+            "";
+
+
+        if (missingSkills.length === 0) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "recommendation";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+            title.textContent =
+                "Strong skill alignment";
+
+
+            const description =
+                document.createElement(
+                    "p"
+                );
+
+            description.textContent =
+                "Your resume contains all of the predefined skills detected in this job description. Review the job carefully for experience-specific requirements before applying.";
+
+
+            item.appendChild(
+                title
+            );
+
+            item.appendChild(
+                description
+            );
+
+            container.appendChild(
+                item
+            );
+
+            return;
+
+        }
+
+
+        missingSkills
+            .slice(0, 8)
+            .forEach(
+                (skill, index) => {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+                    item.className =
+                        "recommendation";
+
+
+                    const title =
+                        document.createElement(
+                            "h3"
+                        );
+
+                    title.textContent =
+                        (
+                            index < 3
+                                ? "High Priority: "
+                                : "Focus Area: "
+                        ) + skill;
+
+
+                    const description =
+                        document.createElement(
+                            "p"
+                        );
+
+                    description.textContent =
+                        "Consider learning " +
+                        skill +
+                        " and demonstrating it through a practical project or relevant resume experience.";
+
+
+                    item.appendChild(
+                        title
+                    );
+
+                    item.appendChild(
+                        description
+                    );
+
+
+                    container.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+    }
+
+
+    /* =========================
+       INITIALIZE
+    ========================= */
+
+    checkLogin();
+
+    applyTheme();
+
+    showResumeStatus();
+
+</script>
+
+</body>
+</html>

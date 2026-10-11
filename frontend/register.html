@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | CareerPath AI</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                CareerPath <span>AI</span>
+            </div>
+
+            <h1>Create Account</h1>
+
+            <p class="auth-subtitle">
+                Start your personalized career journey.
+            </p>
+
+            <form id="registerForm">
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Minimum 6 characters"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Re-enter your password"
+                        minlength="6"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-btn auth-btn"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+            <p id="registerMessage" class="auth-message"></p>
+
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="/static/login.html">Login</a>
+            </p>
+
+            <a href="/" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const registerForm =
+            document.getElementById("registerForm");
+
+        const registerMessage =
+            document.getElementById("registerMessage");
+
+        registerForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const name =
+                    document.getElementById("name").value.trim();
+
+                const email =
+                    document.getElementById("email").value.trim();
+
+                const password =
+                    document.getElementById("password").value;
+
+                const confirmPassword =
+                    document.getElementById(
+                        "confirmPassword"
+                    ).value;
+
+                if (password !== confirmPassword) {
+
+                    registerMessage.textContent =
+                        "Passwords do not match.";
+
+                    registerMessage.className =
+                        "auth-message error";
+
+                    return;
+                }
+
+                registerMessage.textContent =
+                    "Creating account...";
+
+                registerMessage.className =
+                    "auth-message";
+
+                const formData = new FormData();
+
+                formData.append("name", name);
+                formData.append("email", email);
+                formData.append("password", password);
+
+                try {
+
+                    const response = await fetch(
+                        "/api/auth/register",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+                    const result =
+                        await response.json();
+
+                    if (result.success) {
+
+                        registerMessage.textContent =
+                            "Account created successfully. Redirecting...";
+
+                        registerMessage.className =
+                            "auth-message success";
+
+                        localStorage.setItem(
+                            "careerPathUser",
+                            JSON.stringify(result.user)
+                        );
+
+                        setTimeout(() => {
+
+                            window.location.href =
+                                "/static/profile.html";
+
+                        }, 900);
+
+                    } else {
+
+                        registerMessage.textContent =
+                            result.message;
+
+                        registerMessage.className =
+                            "auth-message error";
+                    }
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    registerMessage.textContent =
+                        "Unable to connect to the server.";
+
+                    registerMessage.className =
+                        "auth-message error";
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

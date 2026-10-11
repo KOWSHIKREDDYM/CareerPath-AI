@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerPath AI - Learning Resources</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+
+        /* =========================================================
+           LEARNING RESOURCES
+           ========================================================= */
+
+        .resources-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .resources-intro {
+            margin-bottom: 24px;
+        }
+
+        .resources-intro h1 {
+            margin-bottom: 8px;
+        }
+
+        .resources-intro p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        body.dark-theme .resources-intro p {
+            color: #a1a1aa;
+        }
+
+
+        /* =========================================================
+           SEARCH + FILTERS
+           ========================================================= */
+
+        .resource-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 26px;
+        }
+
+        .resource-search {
+            flex: 1;
+            min-width: 240px;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #111827;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .resource-search:focus {
+            border-color: #2563eb;
+        }
+
+        body.dark-theme .resource-search {
+            background: #18181b;
+            color: #f4f4f5;
+            border-color: #3f3f46;
+        }
+
+        .resource-filter {
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        body.dark-theme .resource-filter {
+            background: #18181b;
+            color: #e4e4e7;
+            border-color: #3f3f46;
+        }
+
+
+        /* =========================================================
+           RESOURCE GRID
+           ========================================================= */
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease,
+                        border-color 0.2s ease;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+            border-color: #c7d2fe;
+        }
+
+        body.dark-theme .resource-card {
+            background: #18181b;
+            border-color: #27272a;
+        }
+
+        body.dark-theme .resource-card:hover {
+            border-color: #52525b;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* =========================================================
+           CARD HEADER
+           ========================================================= */
+
+        .resource-header {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .resource-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        body.dark-theme .resource-icon {
+            background: #27272a;
+        }
+
+        .resource-header h2 {
+            margin: 0 0 6px;
+            font-size: 18px;
+        }
+
+        .resource-provider {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        body.dark-theme .resource-provider {
+            color: #a1a1aa;
+        }
+
+
+        /* =========================================================
+           TAGS
+           ========================================================= */
+
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 14px 0;
+        }
+
+        .resource-tag {
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        body.dark-theme .resource-tag {
+            background: #27272a;
+            color: #d4d4d8;
+        }
+
+
+        /* =========================================================
+           DESCRIPTION
+           ========================================================= */
+
+        .resource-description {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        body.dark-theme .resource-description {
+            color: #a1a1aa;
+        }
+
+
+        /* =========================================================
+           RESOURCE ACTION
+           ========================================================= */
+
+        .resource-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 9px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+
+        .resource-action:hover {
+            background: #1f2937;
+        }
+
+        body.dark-theme .resource-action {
+            background: #f4f4f5;
+            color: #18181b;
+        }
+
+        body.dark-theme .resource-action:hover {
+            background: #e4e4e7;
+        }
+
+
+        /* =========================================================
+           EMPTY STATE
+           ========================================================= */
+
+        .resource-empty {
+            display: none;
+            text-align: center;
+            padding: 50px 20px;
+            color: #6b7280;
+            border: 1px dashed #d1d5db;
+            border-radius: 14px;
+            margin-top: 10px;
+        }
+
+        body.dark-theme .resource-empty {
+            color: #a1a1aa;
+            border-color: #3f3f46;
+        }
+
+
+        /* =========================================================
+           RESOURCE TIP
+           ========================================================= */
+
+        .resource-tip {
+            margin-top: 26px;
+            padding: 18px;
+            border-radius: 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        body.dark-theme .resource-tip {
+            background: #18181b;
+            border-color: #27272a;
+            color: #a1a1aa;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .resource-controls {
+                flex-direction: column;
+            }
+
+            .resource-search,
+            .resource-filter {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app-layout">
+
+
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <span>CareerPath</span> AI
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <div class="nav-section">
+
+                <p>OVERVIEW</p>
+
+                <a
+                    href="/static/dashboard.html"
+                    class="nav-item"
+                >
+                    🏠 Dashboard
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <p>ANALYZE</p>
+
+                <a
+                    href="/static/resume.html"
+                    class="nav-item"
+                >
+                    📄 Resume Analyzer
+                </a>
+
+                <a
+                    href="/static/career_explorer.html"
+                    class="nav-item"
+                >
+                    💼 Career Explorer
+                </a>
+
+                <a href="/static/job_description.html"
+                   class="nav-item">
+                    🔍 Job Description
+                </a>
+
+                <a href="/static/skill_gap.html" class="nav-item">
+                    🧩 Skill Gap Analysis
+                </a>
+
+                <a href="/static/resume_improvement.html" class="nav-item">
+                    ✨ Resume Improvement
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <p>BUILD</p>
+
+                <a href="/static/learning_roadmap.html" class="nav-item">
+                    🗺️ Learning Roadmap
+                </a>
+
+                <a href="/static/project_recommendations.html" class="nav-item">
+                    🚀 Project Recommendations
+                </a>
+
+                <a
+                    href="/static/learning_resources.html"
+                    class="nav-item active"
+                >
+                    📚 Learning Resources
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <p>PRACTICE</p>
+
+                <a
+                    href="/static/career_coach.html"
+                    class="nav-item"
+                >
+                    🤖 AI Career Coach
+                </a>
+
+                <a
+                    href="/static/interview.html"
+                    class="nav-item"
+                >
+                    🎤 Interview Preparation
+                </a>
+
+            </div>
+
+
+            <div class="nav-section">
+
+                <p>TRACK</p>
+
+                <a href="#" class="nav-item">
+                    📊 Progress
+                </a>
+
+            </div>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                onclick="toggleTheme()"
+            >
+                🌙 Dark Mode
+            </button>
+
+
+            <a
+                href="/static/profile.html"
+                class="nav-item"
+            >
+                👤 Profile
+            </a>
+
+
+            <a href="#" class="nav-item">
+                ⚙️ Settings
+            </a>
+
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logoutUser()"
+            >
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
+    <main class="main-content">
+
+
+        <header class="dashboard-header">
+
+            <div class="dashboard-brand">
+                CareerPath <span>AI</span>
+            </div>
+
+            <div class="dashboard-step">
+                Learning Resources
+            </div>
+
+        </header>
+
+
+        <div class="dashboard-container">
+
+            <div class="resources-container">
+
+
+                <!-- INTRO -->
+
+                <div class="resources-intro">
+
+                    <h1>Learning Resources 📚</h1>
+
+                    <p>
+                        Find reliable resources to build the technical skills
+                        required for your target career.
+                    </p>
+
+                </div>
+
+
+                <!-- SEARCH + FILTER -->
+
+                <div class="resource-controls">
+
+                    <input
+                        type="text"
+                        id="resourceSearch"
+                        class="resource-search"
+                        placeholder="Search resources or skills..."
+                        oninput="filterResources()"
+                    >
+
+
+                    <select
+                        id="careerFilter"
+                        class="resource-filter"
+                        onchange="filterResources()"
+                    >
+
+                        <option value="all">
+                            All Careers
+                        </option>
+
+                        <option value="software">
+                            Software Developer
+                        </option>
+
+                        <option value="data-scientist">
+                            Data Scientist
+                        </option>
+
+                        <option value="ml">
+                            Machine Learning Engineer
+                        </option>
+
+                        <option value="ai">
+                            AI Engineer
+                        </option>
+
+                        <option value="full-stack">
+                            Full Stack Developer
+                        </option>
+
+                        <option value="data-analyst">
+                            Data Analyst
+                        </option>
+
+                    </select>
+
+
+                    <select
+                        id="levelFilter"
+                        class="resource-filter"
+                        onchange="filterResources()"
+                    >
+
+                        <option value="all">
+                            All Levels
+                        </option>
+
+                        <option value="beginner">
+                            Beginner
+                        </option>
+
+                        <option value="intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="advanced">
+                            Advanced
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESOURCE GRID
+                     ================================================= -->
+
+                <div
+                    class="resource-grid"
+                    id="resourceGrid"
+                >
+
+
+                    <!-- PYTHON -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="software data-scientist ml ai data-analyst"
+                        data-level="beginner"
+                        data-search="python programming beginner software data science machine learning ai"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🐍
+                            </div>
+
+                            <div>
+
+                                <h2>Python</h2>
+
+                                <div class="resource-provider">
+                                    Python Official Documentation
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Beginner
+                            </span>
+
+                            <span class="resource-tag">
+                                Programming
+                            </span>
+
+                            <span class="resource-tag">
+                                Python
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Learn Python fundamentals, syntax, data structures,
+                            functions, modules and object-oriented programming.
+                        </p>
+
+
+                        <a
+                            href="https://docs.python.org/3/tutorial/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- SQL -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="software data-scientist data-analyst full-stack"
+                        data-level="beginner"
+                        data-search="sql database queries data analyst data scientist software full stack"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🗄️
+                            </div>
+
+                            <div>
+
+                                <h2>SQL</h2>
+
+                                <div class="resource-provider">
+                                    SQLBolt
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Beginner
+                            </span>
+
+                            <span class="resource-tag">
+                                Database
+                            </span>
+
+                            <span class="resource-tag">
+                                SQL
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Practice SQL queries interactively and learn
+                            database concepts through hands-on exercises.
+                        </p>
+
+
+                        <a
+                            href="https://sqlbolt.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- JAVASCRIPT -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="full-stack software"
+                        data-level="beginner"
+                        data-search="javascript web development frontend full stack software"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🌐
+                            </div>
+
+                            <div>
+
+                                <h2>JavaScript</h2>
+
+                                <div class="resource-provider">
+                                    MDN Web Docs
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Beginner
+                            </span>
+
+                            <span class="resource-tag">
+                                Web
+                            </span>
+
+                            <span class="resource-tag">
+                                JavaScript
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Learn JavaScript fundamentals and the core concepts
+                            needed to build interactive web applications.
+                        </p>
+
+
+                        <a
+                            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- REACT -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="full-stack"
+                        data-level="intermediate"
+                        data-search="react javascript frontend components web full stack"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                ⚛️
+                            </div>
+
+                            <div>
+
+                                <h2>React</h2>
+
+                                <div class="resource-provider">
+                                    React Documentation
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Intermediate
+                            </span>
+
+                            <span class="resource-tag">
+                                Frontend
+                            </span>
+
+                            <span class="resource-tag">
+                                React
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Learn components, state, props, events and modern
+                            React development for frontend applications.
+                        </p>
+
+
+                        <a
+                            href="https://react.dev/learn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- MACHINE LEARNING -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="data-scientist ml ai"
+                        data-level="intermediate"
+                        data-search="machine learning supervised unsupervised models data science ai"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🤖
+                            </div>
+
+                            <div>
+
+                                <h2>Machine Learning</h2>
+
+                                <div class="resource-provider">
+                                    Scikit-learn
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Intermediate
+                            </span>
+
+                            <span class="resource-tag">
+                                Machine Learning
+                            </span>
+
+                            <span class="resource-tag">
+                                AI
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Explore machine learning algorithms, preprocessing,
+                            model selection, evaluation and practical examples.
+                        </p>
+
+
+                        <a
+                            href="https://scikit-learn.org/stable/user_guide.html"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- DATA SCIENCE -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="data-scientist data-analyst"
+                        data-level="intermediate"
+                        data-search="pandas numpy data science data analysis statistics visualization"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                📊
+                            </div>
+
+                            <div>
+
+                                <h2>Data Analysis</h2>
+
+                                <div class="resource-provider">
+                                    Kaggle Learn
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Intermediate
+                            </span>
+
+                            <span class="resource-tag">
+                                Pandas
+                            </span>
+
+                            <span class="resource-tag">
+                                Data Science
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Practice data analysis, Python, Pandas and
+                            machine learning through short interactive lessons.
+                        </p>
+
+
+                        <a
+                            href="https://www.kaggle.com/learn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- DEEP LEARNING -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="ml ai"
+                        data-level="advanced"
+                        data-search="deep learning neural networks tensorflow machine learning ai"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🧠
+                            </div>
+
+                            <div>
+
+                                <h2>Deep Learning</h2>
+
+                                <div class="resource-provider">
+                                    TensorFlow
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Advanced
+                            </span>
+
+                            <span class="resource-tag">
+                                Deep Learning
+                            </span>
+
+                            <span class="resource-tag">
+                                Neural Networks
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Learn neural networks and practical deep learning
+                            workflows for modern AI applications.
+                        </p>
+
+
+                        <a
+                            href="https://www.tensorflow.org/learn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- GENERATIVE AI -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="ai"
+                        data-level="advanced"
+                        data-search="generative ai llm large language models ai agents rag hugging face"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                ✨
+                            </div>
+
+                            <div>
+
+                                <h2>Generative AI</h2>
+
+                                <div class="resource-provider">
+                                    Hugging Face
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Advanced
+                            </span>
+
+                            <span class="resource-tag">
+                                Generative AI
+                            </span>
+
+                            <span class="resource-tag">
+                                LLM
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Explore transformers, language models and modern
+                            generative AI concepts and tools.
+                        </p>
+
+
+                        <a
+                            href="https://huggingface.co/learn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- GIT -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="software full-stack ml ai"
+                        data-level="beginner"
+                        data-search="git github version control software developer full stack machine learning"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🌿
+                            </div>
+
+                            <div>
+
+                                <h2>Git</h2>
+
+                                <div class="resource-provider">
+                                    Git Documentation
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Beginner
+                            </span>
+
+                            <span class="resource-tag">
+                                Version Control
+                            </span>
+
+                            <span class="resource-tag">
+                                Git
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Learn version control, repositories, branches,
+                            commits and collaborative development workflows.
+                        </p>
+
+
+                        <a
+                            href="https://git-scm.com/doc"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+
+                    <!-- REST API -->
+
+                    <div
+                        class="resource-card"
+                        data-careers="software full-stack"
+                        data-level="intermediate"
+                        data-search="rest api backend web development fastapi software full stack"
+                    >
+
+                        <div class="resource-header">
+
+                            <div class="resource-icon">
+                                🔌
+                            </div>
+
+                            <div>
+
+                                <h2>REST APIs</h2>
+
+                                <div class="resource-provider">
+                                    MDN Web Docs
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="resource-tags">
+
+                            <span class="resource-tag">
+                                Intermediate
+                            </span>
+
+                            <span class="resource-tag">
+                                Backend
+                            </span>
+
+                            <span class="resource-tag">
+                                APIs
+                            </span>
+
+                        </div>
+
+
+                        <p class="resource-description">
+                            Understand HTTP, requests, responses and the
+                            fundamentals of building web APIs.
+                        </p>
+
+
+                        <a
+                            href="https://developer.mozilla.org/en-US/docs/Web/HTTP"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="resource-action"
+                        >
+                            Open Resource ↗
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY STATE -->
+
+                <div
+                    id="resourceEmpty"
+                    class="resource-empty"
+                >
+                    No learning resources match your search or filters.
+                </div>
+
+
+                <!-- TIP -->
+
+                <div class="resource-tip">
+
+                    💡 <strong>CareerPath AI Tip:</strong>
+                    Start with the skills identified in your Skill Gap Analysis.
+                    Build one skill at a time, practice it through projects,
+                    and use Interview Preparation to test your understanding.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-footer">
+            CareerPath AI · Agentic AI Career Guidance Platform · SDG 8
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="/static/auth.js"></script>
+
+<script>
+
+    // =========================================================
+    // LOGIN GUARD
+    // =========================================================
+
+    const loggedInUser = requireLogin();
+
+    if (!loggedInUser) {
+        throw new Error("User is not logged in.");
+    }
+
+
+    // =========================================================
+    // THEME
+    // =========================================================
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem("careerPathTheme") || "light";
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains("dark-theme");
+
+        const nextTheme =
+            isDark ? "light" : "dark";
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+        applyTheme();
+
+    }
+
+
+    applyTheme();
+
+
+    // =========================================================
+    // RESOURCE FILTERING
+    // =========================================================
+
+    function filterResources() {
+
+        const searchInput =
+            document.getElementById("resourceSearch");
+
+        const careerFilter =
+            document.getElementById("careerFilter");
+
+        const levelFilter =
+            document.getElementById("levelFilter");
+
+        const emptyState =
+            document.getElementById("resourceEmpty");
+
+        const searchText =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        const selectedCareer =
+            careerFilter.value;
+
+        const selectedLevel =
+            levelFilter.value;
+
+        const cards =
+            document.querySelectorAll(".resource-card");
+
+        let visibleCount = 0;
+
+
+        cards.forEach(card => {
+
+            const cardCareers =
+                card.dataset.careers
+                    .toLowerCase();
+
+            const cardLevel =
+                card.dataset.level
+                    .toLowerCase();
+
+            const cardSearch =
+                card.dataset.search
+                    .toLowerCase();
+
+
+            const matchesSearch =
+                !searchText ||
+                cardSearch.includes(searchText);
+
+
+            const matchesCareer =
+                selectedCareer === "all" ||
+                cardCareers.includes(selectedCareer);
+
+
+            const matchesLevel =
+                selectedLevel === "all" ||
+                cardLevel === selectedLevel;
+
+
+            const shouldShow =
+                matchesSearch &&
+                matchesCareer &&
+                matchesLevel;
+
+
+            if (shouldShow) {
+
+                card.style.display = "";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (emptyState) {
+
+            emptyState.style.display =
+                visibleCount === 0
+                    ? "block"
+                    : "none";
+
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerPath AI - Career Explorer</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        /* =========================================================
+           CAREER EXPLORER
+           ========================================================= */
+
+        .career-explorer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .career-explorer-intro {
+            margin-bottom: 28px;
+        }
+
+        .career-explorer-intro h1 {
+            margin-bottom: 8px;
+        }
+
+        .career-explorer-intro p {
+            color: #6b7280;
+            margin: 0;
+        }
+
+        body.dark-theme .career-explorer-intro p {
+            color: #a1a1aa;
+        }
+
+        .career-explorer-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .career-card {
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease,
+                        border-color 0.2s ease;
+        }
+
+        .career-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border-color: #c7d2fe;
+        }
+
+        body.dark-theme .career-card {
+            background: #18181b;
+            border-color: #27272a;
+        }
+
+        body.dark-theme .career-card:hover {
+            border-color: #52525b;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .career-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .career-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #eef2ff;
+            flex-shrink: 0;
+        }
+
+        body.dark-theme .career-icon {
+            background: #27272a;
+        }
+
+        .career-card-header h2 {
+            margin: 0 0 5px;
+            font-size: 20px;
+        }
+
+        .career-level {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        body.dark-theme .career-level {
+            background: #27272a;
+            color: #d4d4d8;
+        }
+
+        .career-description {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        body.dark-theme .career-description {
+            color: #a1a1aa;
+        }
+
+        .career-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .career-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .career-skill {
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 13px;
+        }
+
+        body.dark-theme .career-skill {
+            background: #27272a;
+            color: #e4e4e7;
+        }
+
+        .career-focus {
+            padding: 14px;
+            border-radius: 10px;
+            background: #f9fafb;
+            margin-bottom: 20px;
+        }
+
+        body.dark-theme .career-focus {
+            background: #27272a;
+        }
+
+        .career-focus strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .career-focus span {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        body.dark-theme .career-focus span {
+            color: #a1a1aa;
+        }
+
+        .career-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .career-action-btn {
+            border: none;
+            border-radius: 9px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .career-action-primary {
+            background: #111827;
+            color: white;
+        }
+
+        .career-action-primary:hover {
+            background: #1f2937;
+        }
+
+        .career-action-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .career-action-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        body.dark-theme .career-action-primary {
+            background: #f4f4f5;
+            color: #18181b;
+        }
+
+        body.dark-theme .career-action-primary:hover {
+            background: #e4e4e7;
+        }
+
+        body.dark-theme .career-action-secondary {
+            background: #27272a;
+            color: #e4e4e7;
+        }
+
+        body.dark-theme .career-action-secondary:hover {
+            background: #3f3f46;
+        }
+
+        .career-note {
+            margin-top: 28px;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            background: #fafafa;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        body.dark-theme .career-note {
+            background: #18181b;
+            border-color: #27272a;
+            color: #a1a1aa;
+        }
+
+        @media (max-width: 900px) {
+            .career-explorer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .career-card {
+                padding: 18px;
+            }
+
+            .career-actions {
+                flex-direction: column;
+            }
+
+            .career-action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- =========================================================
+         SIDEBAR
+         ========================================================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <span>CareerPath</span> AI
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+                <p>OVERVIEW</p>
+
+                <a href="/static/dashboard.html" class="nav-item">
+                    🏠 Dashboard
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>ANALYZE</p>
+
+                <a href="/static/resume.html" class="nav-item">
+                    📄 Resume Analyzer
+                </a>
+
+                <a href="/static/career_explorer.html" class="nav-item active">
+                    💼 Career Explorer
+                </a>
+
+                <a href="/static/job_description.html" class="nav-item">
+                   🔍 Job Description
+                </a>
+
+
+                <a href="/static/skill_gap.html" class="nav-item">
+                   🧩 Skill Gap Analysis
+                </a>
+
+                <a href="/static/resume_improvement.html" class="nav-item">
+                   ✨ Resume Improvement
+                </a>
+            </div>
+
+            <div class="nav-section">
+            <p>BUILD</p>
+
+                <a href="/static/learning_roadmap.html" class="nav-item">
+                   🗺️ Learning Roadmap
+                </a>
+
+                <a href="/static/project_recommendations.html" class="nav-item">
+                   🚀 Project Recommendations
+                </a>
+                <a href="/static/learning_resources.html" class="nav-item">
+                   📚 Learning Resources
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>PRACTICE</p>
+
+                <a href="/static/career_coach.html" class="nav-item">
+                    🤖 AI Career Coach
+                </a>
+
+                <a href="/static/interview.html" class="nav-item">
+                    🎤 Interview Preparation
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>TRACK</p>
+
+                <a href="/static/progress.html" class="nav-item">
+                    📊 Progress
+                </a>
+            </div>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                onclick="toggleTheme()"
+            >
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html" class="nav-item">
+                👤 Profile
+            </a>
+
+            <a href="#" class="nav-item">
+                ⚙️ Settings
+            </a>
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logoutUser()"
+            >
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
+
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div class="dashboard-brand">
+                CareerPath <span>AI</span>
+            </div>
+
+            <div class="dashboard-step">
+                Career Explorer
+            </div>
+
+        </header>
+
+
+        <div class="dashboard-container">
+
+            <div class="career-explorer-container">
+
+                <!-- INTRO -->
+
+                <div class="career-explorer-intro">
+
+                    <h1>Explore Career Paths 🚀</h1>
+
+                    <p>
+                        Discover engineering careers, understand the skills they require,
+                        and identify what you should focus on next.
+                    </p>
+
+                </div>
+
+
+                <!-- CAREER CARDS -->
+
+                <div class="career-explorer-grid">
+
+
+                    <!-- SOFTWARE DEVELOPER -->
+
+                    <div class="career-card">
+
+                        <div class="career-card-header">
+
+                            <div class="career-icon">
+                                💻
+                            </div>
+
+                            <div>
+                                <h2>Software Developer</h2>
+                                <span class="career-level">
+                                    Beginner Friendly
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <p class="career-description">
+                            Build software applications, APIs and backend systems
+                            used by businesses and users.
+                        </p>
+
+                        <div class="career-section-title">
+                            Core Skills
+                        </div>
+
+                        <div class="career-skills">
+
+                            <span class="career-skill">Python</span>
+                            <span class="career-skill">Java</span>
+                            <span class="career-skill">Data Structures</span>
+                            <span class="career-skill">Algorithms</span>
+                            <span class="career-skill">SQL</span>
+                            <span class="career-skill">Git</span>
+                            <span class="career-skill">REST APIs</span>
+
+                        </div>
+
+                        <div class="career-focus">
+
+                            <strong>Recommended Focus</strong>
+
+                            <span>
+                                Programming fundamentals, problem solving,
+                                data structures, algorithms and backend development.
+                            </span>
+
+                        </div>
+
+                        <div class="career-actions">
+
+                            <a
+                                href="/static/career_coach.html"
+                                class="career-action-btn career-action-primary"
+                            >
+                                Ask AI Coach
+                            </a>
+
+                            <a
+                                href="/static/dashboard.html"
+                                class="career-action-btn career-action-secondary"
+                            >
+                                View My Analysis
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DATA SCIENTIST -->
+
+                    <div class="career-card">
+
+                        <div class="career-card-header">
+
+                            <div class="career-icon">
+                                📊
+                            </div>
+
+                            <div>
+                                <h2>Data Scientist</h2>
+                                <span class="career-level">
+                                    Intermediate
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <p class="career-description">
+                            Analyze data, discover patterns and build predictive
+                            models that support data-driven decisions.
+                        </p>
+
+                        <div class="career-section-title">
+                            Core Skills
+                        </div>
+
+                        <div class="career-skills">
+
+                            <span class="career-skill">Python</span>
+                            <span class="career-skill">SQL</span>
+                            <span class="career-skill">Statistics</span>
+                            <span class="career-skill">Pandas</span>
+                            <span class="career-skill">NumPy</span>
+                            <span class="career-skill">Machine Learning</span>
+                            <span class="career-skill">Data Visualization</span>
+
+                        </div>
+
+                        <div class="career-focus">
+
+                            <strong>Recommended Focus</strong>
+
+                            <span>
+                                Statistics, Python data analysis, machine learning,
+                                data visualization and practical projects.
+                            </span>
+
+                        </div>
+
+                        <div class="career-actions">
+
+                            <a
+                                href="/static/career_coach.html"
+                                class="career-action-btn career-action-primary"
+                            >
+                                Ask AI Coach
+                            </a>
+
+                            <a
+                                href="/static/dashboard.html"
+                                class="career-action-btn career-action-secondary"
+                            >
+                                View My Analysis
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MACHINE LEARNING ENGINEER -->
+
+                    <div class="career-card">
+
+                        <div class="career-card-header">
+
+                            <div class="career-icon">
+                                🧠
+                            </div>
+
+                            <div>
+                                <h2>Machine Learning Engineer</h2>
+                                <span class="career-level">
+                                    Advanced
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <p class="career-description">
+                            Develop, deploy and maintain machine learning models
+                            that solve real-world engineering problems.
+                        </p>
+
+                        <div class="career-section-title">
+                            Core Skills
+                        </div>
+
+                        <div class="career-skills">
+
+                            <span class="career-skill">Python</span>
+                            <span class="career-skill">Machine Learning</span>
+                            <span class="career-skill">Statistics</span>
+                            <span class="career-skill">Deep Learning</span>
+                            <span class="career-skill">Scikit-learn</span>
+                            <span class="career-skill">TensorFlow</span>
+                            <span class="career-skill">Model Deployment</span>
+                            <span class="career-skill">MLOps</span>
+
+                        </div>
+
+                        <div class="career-focus">
+
+                            <strong>Recommended Focus</strong>
+
+                            <span>
+                                Machine learning algorithms, deep learning,
+                                model evaluation, deployment and MLOps.
+                            </span>
+
+                        </div>
+
+                        <div class="career-actions">
+
+                            <a
+                                href="/static/career_coach.html"
+                                class="career-action-btn career-action-primary"
+                            >
+                                Ask AI Coach
+                            </a>
+
+                            <a
+                                href="/static/dashboard.html"
+                                class="career-action-btn career-action-secondary"
+                            >
+                                View My Analysis
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- AI ENGINEER -->
+
+                    <div class="career-card">
+
+                        <div class="career-card-header">
+
+                            <div class="career-icon">
+                                🤖
+                            </div>
+
+                            <div>
+                                <h2>AI Engineer</h2>
+                                <span class="career-level">
+                                    Advanced
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <p class="career-description">
+                            Build AI-powered applications using machine learning,
+                            generative AI, large language models and AI agents.
+                        </p>
+
+                        <div class="career-section-title">
+                            Core Skills
+                        </div>
+
+                        <div class="career-skills">
+
+                            <span class="career-skill">Python</span>
+                            <span class="career-skill">Machine Learning</span>
+                            <span class="career-skill">Deep Learning</span>
+                            <span class="career-skill">Generative AI</span>
+                            <span class="career-skill">LLM</span>
+                            <span class="career-skill">RAG</span>
+                            <span class="career-skill">Agentic AI</span>
+                            <span class="career-skill">MLOps</span>
+
+                        </div>
+
+                        <div class="career-focus">
+
+                            <strong>Recommended Focus</strong>
+
+                            <span>
+                                Generative AI, LLM applications, RAG pipelines,
+                                AI agents and model deployment.
+                            </span>
+
+                        </div>
+
+                        <div class="career-actions">
+
+                            <a
+                                href="/static/career_coach.html"
+                                class="career-action-btn career-action-primary"
+                            >
+                                Ask AI Coach
+                            </a>
+
+                            <a
+                                href="/static/dashboard.html"
+                                class="career-action-btn career-action-secondary"
+                            >
+                                View My Analysis
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FULL STACK DEVELOPER -->
+
+                    <div class="career-card">
+
+                        <div class="career-card-header">
+
+                            <div class="career-icon">
+                                🌐
+                            </div>
+
+                            <div>
+                                <h2>Full Stack Developer</h2>
+                                <span class="career-level">
+                                    Intermediate
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <p class="career-description">
+                            Build complete web applications across the frontend,
+                            backend and database layers.
+                        </p>
+
+                        <div class="career-section-title">
+                            Core Skills
+                        </div>
+
+                        <div class="career-skills">
+
+                            <span class="career-skill">HTML</span>
+                            <span class="career-skill">CSS</span>
+                            <span class="career-skill">JavaScript</span>
+                            <span class="career-skill">React</span>
+                            <span class="career-skill">Node.js</span>
+                            <span class="career-skill">SQL</span>
+                            <span class="career-skill">MongoDB</span>
+                            <span class="career-skill">REST APIs</span>
+
+                        </div>
+
+                        <div class="career-focus">
+
+                            <strong>Recommended Focus</strong>
+
+                            <span>
+                                Modern frontend development, backend APIs,
+                                databases and full-stack application projects.
+                            </span>
+
+                        </div>
+
+                        <div class="career-actions">
+
+                            <a
+                                href="/static/career_coach.html"
+                                class="career-action-btn career-action-primary"
+                            >
+                                Ask AI Coach
+                            </a>
+
+                            <a
+                                href="/static/dashboard.html"
+                                class="career-action-btn career-action-secondary"
+                            >
+                                View My Analysis
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DATA ANALYST -->
+
+                    <div class="career-card">
+
+                        <div class="career-card-header">
+
+                            <div class="career-icon">
+                                📈
+                            </div>
+
+                            <div>
+                                <h2>Data Analyst</h2>
+                                <span class="career-level">
+                                    Beginner Friendly
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <p class="career-description">
+                            Transform raw data into useful insights through
+                            analysis, visualization and reporting.
+                        </p>
+
+                        <div class="career-section-title">
+                            Core Skills
+                        </div>
+
+                        <div class="career-skills">
+
+                            <span class="career-skill">SQL</span>
+                            <span class="career-skill">Python</span>
+                            <span class="career-skill">Excel</span>
+                            <span class="career-skill">Statistics</span>
+                            <span class="career-skill">Pandas</span>
+                            <span class="career-skill">Data Visualization</span>
+
+                        </div>
+
+                        <div class="career-focus">
+
+                            <strong>Recommended Focus</strong>
+
+                            <span>
+                                SQL, data cleaning, statistics, Python analysis,
+                                dashboards and business problem solving.
+                            </span>
+
+                        </div>
+
+                        <div class="career-actions">
+
+                            <a
+                                href="/static/career_coach.html"
+                                class="career-action-btn career-action-primary"
+                            >
+                                Ask AI Coach
+                            </a>
+
+                            <a
+                                href="/static/dashboard.html"
+                                class="career-action-btn career-action-secondary"
+                            >
+                                View My Analysis
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="career-note">
+
+                    💡 <strong>CareerPath AI Tip:</strong>
+                    Your best career choice should depend on your current skills,
+                    interests and skill gaps. Use the Resume Analyzer and Dashboard
+                    to see how your profile aligns with a career path.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-footer">
+            CareerPath AI · Agentic AI Career Guidance Platform · SDG 8
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="/static/auth.js"></script>
+
+<script>
+
+    // =========================================================
+    // LOGIN GUARD
+    // =========================================================
+
+    const loggedInUser = requireLogin();
+
+    if (!loggedInUser) {
+        throw new Error("User is not logged in.");
+    }
+
+
+    // =========================================================
+    // LIGHT / DARK THEME
+    // =========================================================
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem("careerPathTheme") || "light";
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+        }
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains("dark-theme");
+
+        const nextTheme =
+            isDark ? "light" : "dark";
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+        applyTheme();
+    }
+
+
+    applyTheme();
+
+</script>
+
+</body>
+</html>

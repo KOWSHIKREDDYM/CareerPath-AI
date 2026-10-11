@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerPath AI - Career Coach</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+            <span>CareerPath</span> AI
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+                <p>OVERVIEW</p>
+
+                <a href="/static/dashboard.html" class="nav-item">
+                    🏠 Dashboard
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>ANALYZE</p>
+
+                <a href="/static/resume.html" class="nav-item">
+                    📄 Resume Analyzer
+                </a>
+
+                <a href="/static/dashboard.html" class="nav-item">
+                    💼 Career Explorer
+                </a>
+
+                <a href="/static/job_description.html" class="nav-item">
+                   🔍 Job Description
+                </a>
+
+                <a href="/static/dashboard.html" class="nav-item">
+                    🧩 Skill Gap Analysis
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>BUILD</p>
+
+                <a href="/static/dashboard.html" class="nav-item">
+                    🗺️ Learning Roadmap
+                </a>
+
+                <a href="/static/dashboard.html" class="nav-item">
+                    🚀 Project Recommendations
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>PRACTICE</p>
+
+                <a href="/static/career_coach.html" class="nav-item active">
+                    🤖 AI Career Coach
+                </a>
+
+                <a href="/static/interview.html" class="nav-item">
+                    🎤 Interview Preparation
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <p>TRACK</p>
+
+                <a
+                   href="/static/progress.html"
+                   class="nav-item"
+                   onclick="window.location.href='/static/progress.html'; return false;"
+                >
+                   📊 Progress
+                </a>
+            </div>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                onclick="toggleTheme()">
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html" class="nav-item">
+                👤 Profile
+            </a>
+
+            <button
+                type="button"
+                class="logout-btn"
+                onclick="logoutUser()">
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div class="dashboard-brand">
+                CareerPath <span>AI</span>
+            </div>
+
+            <div class="dashboard-step">
+                AI Career Coach
+            </div>
+
+        </header>
+
+
+        <div class="dashboard-container">
+
+            <div class="dashboard-welcome">
+
+                <h1>
+                    AI Career Coach 🤖
+                </h1>
+
+                <p>
+                    Ask questions about careers, skills, projects,
+                    resumes, learning and interviews.
+                </p>
+
+            </div>
+
+
+            <!-- CHAT CARD -->
+
+            <div class="dashboard-card">
+
+                <h2>
+                    Career Guidance Assistant
+                </h2>
+
+                <div
+                    id="chatMessages"
+                    style="
+                        min-height: 350px;
+                        max-height: 500px;
+                        overflow-y: auto;
+                        padding: 20px;
+                        margin: 20px 0;
+                        border: 1px solid var(--border-color);
+                        border-radius: 12px;
+                    "
+                >
+
+                    <div style="margin-bottom: 20px;">
+
+                        <strong>
+                            🤖 CareerPath AI
+                        </strong>
+
+                        <p>
+                            Hi! I'm your AI Career Coach.
+                            Ask me anything about your career,
+                            skills, projects, resume or interviews.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INPUT -->
+
+                <div
+                    style="
+                        display: flex;
+                        gap: 10px;
+                    "
+                >
+
+                    <input
+                        type="text"
+                        id="questionInput"
+                        placeholder="Ask your career question..."
+                        autocomplete="off"
+                        style="
+                            flex: 1;
+                            padding: 14px;
+                            border-radius: 10px;
+                            border: 1px solid var(--border-color);
+                            background: var(--card-bg);
+                            color: var(--text-primary);
+                        "
+                    >
+
+                    <button
+                        type="button"
+                        id="askButton"
+                        onclick="askCareerCoach()"
+                        class="primary-btn"
+                    >
+                        Ask AI
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script src="/static/auth.js"></script>
+
+<script>
+
+    // ==========================================
+    // LOGIN CHECK
+    // ==========================================
+
+    const loggedInUser = requireLogin();
+
+    if (!loggedInUser) {
+        throw new Error("User is not logged in.");
+    }
+
+
+    // ==========================================
+    // THEME
+    // ==========================================
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem("careerPathTheme") || "light";
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+        }
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains("dark-theme");
+
+        const nextTheme =
+            isDark ? "light" : "dark";
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+        applyTheme();
+    }
+
+
+    applyTheme();
+
+
+    // ==========================================
+    // USER DATA
+    // ==========================================
+
+    const profileData =
+        JSON.parse(
+            localStorage.getItem("careerPathProfile")
+        ) || {};
+
+    const resumeData =
+        JSON.parse(
+            localStorage.getItem("resumeAnalysis")
+        ) || {};
+
+
+    // ==========================================
+    // CHAT STATE
+    // ==========================================
+
+    let careerCoachBusy = false;
+
+
+    // ==========================================
+    // BASIC MARKDOWN FORMATTER
+    // ==========================================
+
+    function formatAIResponse(text) {
+
+    if (!text) {
+        return "";
+    }
+
+    // Escape HTML so AI-generated text cannot inject HTML.
+    let safeText = String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    // Bold text: **example**
+    safeText = safeText.replace(
+        /\*\*(.*?)\*\*/g,
+        "<strong>$1</strong>"
+    );
+
+    // Split response into individual lines.
+    const lines = safeText.split("\n");
+
+    const formattedLines = [];
+
+    for (let line of lines) {
+
+        line = line.trim();
+
+        // Empty line
+        if (!line) {
+            formattedLines.push(
+                '<div style="height:8px;"></div>'
+            );
+            continue;
+        }
+
+        // Numbered list: 1. Python
+        const numberedMatch =
+            line.match(/^(\d+)\.\s+(.*)$/);
+
+        if (numberedMatch) {
+
+            formattedLines.push(`
+                <div style="
+                    margin: 6px 0;
+                    line-height: 1.6;
+                ">
+                    <strong>${numberedMatch[1]}.</strong>
+                    ${numberedMatch[2]}
+                </div>
+            `);
+
+            continue;
+        }
+
+        // Bullet list: - Python / • Python / * Python
+        const bulletMatch =
+            line.match(/^[-•*]\s+(.*)$/);
+
+        if (bulletMatch) {
+
+            formattedLines.push(`
+                <div style="
+                    margin: 5px 0 5px 14px;
+                    line-height: 1.6;
+                ">
+                    • ${bulletMatch[1]}
+                </div>
+            `);
+
+            continue;
+        }
+
+        // Normal paragraph
+        formattedLines.push(`
+            <div style="
+                margin: 6px 0;
+                line-height: 1.6;
+            ">
+                ${line}
+            </div>
+        `);
+    }
+
+    return formattedLines.join("");
+}
+
+    // ==========================================
+    // ASK CAREER COACH
+    // ==========================================
+
+    async function askCareerCoach() {
+
+        // Prevent duplicate requests.
+        if (careerCoachBusy) {
+            return;
+        }
+
+        const input =
+            document.getElementById("questionInput");
+
+        const askButton =
+            document.getElementById("askButton");
+
+        const chatMessages =
+            document.getElementById("chatMessages");
+
+        const question =
+            input.value.trim();
+
+        if (!question) {
+            return;
+        }
+
+
+        // Lock the chat while the request is running.
+        careerCoachBusy = true;
+
+        input.disabled = true;
+
+        if (askButton) {
+            askButton.disabled = true;
+            askButton.textContent = "Thinking...";
+        }
+
+
+        // ==========================================
+        // USER MESSAGE
+        // ==========================================
+
+        const userMessage =
+            document.createElement("div");
+
+        userMessage.style.marginBottom = "20px";
+
+        const userLabel =
+            document.createElement("strong");
+
+        userLabel.textContent = "👤 You";
+
+        const userText =
+            document.createElement("p");
+
+        userText.textContent = question;
+
+        userMessage.appendChild(userLabel);
+        userMessage.appendChild(userText);
+
+        chatMessages.appendChild(userMessage);
+
+
+        // Clear input.
+        input.value = "";
+
+
+        // ==========================================
+        // AI THINKING MESSAGE
+        // ==========================================
+
+        const thinkingMessage =
+            document.createElement("div");
+
+        thinkingMessage.style.marginBottom = "20px";
+
+        const aiLabel =
+            document.createElement("strong");
+
+        aiLabel.textContent = "🤖 CareerPath AI";
+
+        const thinkingText =
+            document.createElement("p");
+
+        thinkingText.textContent = "Thinking...";
+
+        thinkingMessage.appendChild(aiLabel);
+        thinkingMessage.appendChild(thinkingText);
+
+        chatMessages.appendChild(thinkingMessage);
+
+
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
+
+
+        try {
+
+            // ==========================================
+            // API REQUEST
+            // ==========================================
+
+            const response =
+                await fetch(
+                    "/api/career-coach",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            question: question,
+
+                            profile: profileData,
+
+                            resume_text:
+                                resumeData.text || ""
+
+                        })
+                    }
+                );
+
+
+            // Check HTTP status before parsing JSON.
+            if (!response.ok) {
+
+                throw new Error(
+                    `Server returned HTTP ${response.status}`
+                );
+            }
+
+
+            const result =
+                await response.json();
+
+
+            if (!result.success) {
+
+                throw new Error(
+                    result.message ||
+                    "Career Coach request failed."
+                );
+            }
+
+
+            // ==========================================
+            // DISPLAY AI RESPONSE
+            // ==========================================
+
+            thinkingText.innerHTML =
+                formatAIResponse(result.answer);
+
+
+        } catch (error) {
+
+            console.error(
+                "Career Coach Error:",
+                error
+            );
+
+
+            thinkingText.textContent =
+                "Sorry, I couldn't process your question. Please try again.";
+
+        } finally {
+
+            // ==========================================
+            // UNLOCK CHAT
+            // ==========================================
+
+            careerCoachBusy = false;
+
+            input.disabled = false;
+
+            if (askButton) {
+                askButton.disabled = false;
+                askButton.textContent = "Ask AI";
+            }
+
+            input.focus();
+
+            chatMessages.scrollTop =
+                chatMessages.scrollHeight;
+        }
+
+    }
+
+
+    // ==========================================
+    // ENTER KEY
+    // ==========================================
+
+    document
+        .getElementById("questionInput")
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    askCareerCoach();
+
+                }
+
+            }
+        );
+
+</script>
+
+</body>
+
+</html>

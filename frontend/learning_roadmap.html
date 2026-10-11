@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Roadmap | CareerPath AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 22px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        .logo span {
+            color: #4f46e5;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: block;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 11px 12px;
+            margin: 3px 0;
+            border-radius: 9px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .nav-item.active {
+            background: #eef2ff;
+            color: #4f46e5;
+            font-weight: 700;
+        }
+
+        .sidebar-bottom {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .theme-btn,
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: left;
+            padding: 11px 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            color: #4b5563;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .theme-btn:hover,
+        .logout-btn:hover {
+            background: #f3f4f6;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            padding: 32px;
+        }
+
+        .page-header {
+            margin-bottom: 26px;
+        }
+
+        .page-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        /* CAREER CARD */
+
+        .career-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .career-card h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .career-card p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .career-info {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .info-pill {
+            padding: 8px 13px;
+            background: #eef2ff;
+            color: #4338ca;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* PROGRESS */
+
+        .progress-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .progress-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+        }
+
+        .progress-heading h2 {
+            font-size: 18px;
+        }
+
+        .progress-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #4f46e5;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #4f46e5;
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            margin-top: 11px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* ROADMAP */
+
+        .roadmap-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .roadmap-card h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .roadmap-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .roadmap-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .roadmap-item {
+            display: flex;
+            gap: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+            padding: 17px;
+            transition: 0.2s;
+        }
+
+        .roadmap-item:hover {
+            transform: translateY(-1px);
+        }
+
+        .step-number {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .roadmap-content {
+            flex: 1;
+        }
+
+        .roadmap-content h3 {
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .roadmap-content p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 9px;
+        }
+
+        .roadmap-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .meta-pill {
+            padding: 6px 10px;
+            background: #f3f4f6;
+            border-radius: 15px;
+            color: #4b5563;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .empty-message {
+            color: #9ca3af;
+            font-size: 14px;
+            padding: 20px 0;
+        }
+
+        .loading {
+            color: #6b7280;
+            font-size: 14px;
+            padding: 20px 0;
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 13px;
+            border-radius: 9px;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .action-btn {
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 9px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .action-btn:hover {
+            background: #e0e7ff;
+        }
+
+        /* DARK MODE */
+
+        body.dark-theme {
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        body.dark-theme .sidebar,
+        body.dark-theme .career-card,
+        body.dark-theme .progress-card,
+        body.dark-theme .roadmap-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+
+        body.dark-theme .nav-item,
+        body.dark-theme .theme-btn,
+        body.dark-theme .logout-btn {
+            color: #d1d5db;
+        }
+
+        body.dark-theme .nav-item:hover,
+        body.dark-theme .theme-btn:hover,
+        body.dark-theme .logout-btn:hover {
+            background: #374151;
+            color: #ffffff;
+        }
+
+        body.dark-theme .nav-item.active {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .nav-title,
+        body.dark-theme .page-header p,
+        body.dark-theme .career-card p,
+        body.dark-theme .progress-text,
+        body.dark-theme .roadmap-description,
+        body.dark-theme .roadmap-content p {
+            color: #9ca3af;
+        }
+
+        body.dark-theme .sidebar-bottom {
+            border-color: #374151;
+        }
+
+        body.dark-theme .progress-track {
+            background: #374151;
+        }
+
+        body.dark-theme .roadmap-item {
+            border-color: #374151;
+        }
+
+        body.dark-theme .meta-pill {
+            background: #374151;
+            color: #d1d5db;
+        }
+
+        body.dark-theme .info-pill {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        body.dark-theme .step-number {
+            background: #312e81;
+            color: #c7d2fe;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 760px) {
+
+            .app {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .roadmap-item {
+                flex-direction: column;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Career<span>Path</span> AI
+        </div>
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Overview
+            </div>
+
+            <a href="/static/dashboard.html"
+               class="nav-item">
+                🏠 Dashboard
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Analyze
+            </div>
+
+            <a href="/static/resume.html"
+               class="nav-item">
+                📄 Resume Analyzer
+            </a>
+
+            <a href="/static/career_explorer.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_explorer.html'; return false;">
+                💼 Career Explorer
+            </a>
+
+            <a href="/static/job_description.html"
+               class="nav-item">
+                🔍 Job Description
+            </a>
+
+            <a href="/static/skill_gap.html"
+               class="nav-item"
+               onclick="window.location.href='/static/skill_gap.html'; return false;">
+                  🧩 Skill Gap Analysis
+            </a>
+
+            <a href="/static/resume_improvement.html"
+               class="nav-item">
+                ✨ Resume Improvement
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Build
+            </div>
+
+            <a href="/static/learning_roadmap.html"
+               class="nav-item active"
+               onclick="window.location.href='/static/learning_roadmap.html'; return false;">
+                🗺️ Learning Roadmap
+            </a>
+
+            <a href="/static/project_recommendations.html"
+               class="nav-item">
+                🚀 Project Recommendations
+            </a>
+
+            <a href="/static/learning_resources.html"
+               class="nav-item"
+               onclick="window.location.href='/static/learning_resources.html'; return false;">
+                📚 Learning Resources
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Practice
+            </div>
+
+            <a href="/static/career_coach.html"
+               class="nav-item"
+               onclick="window.location.href='/static/career_coach.html'; return false;">
+                🤖 AI Career Coach
+            </a>
+
+            <a href="/static/interview.html"
+               class="nav-item"
+               onclick="window.location.href='/static/interview.html'; return false;">
+                🎤 Interview Preparation
+            </a>
+
+        </div>
+
+
+        <div class="nav-section">
+
+            <div class="nav-title">
+                Track
+            </div>
+
+            <a href="/static/progress.html"
+               class="nav-item"
+               onclick="window.location.href='/static/progress.html'; return false;">
+                📊 Progress
+            </a>
+
+        </div>
+
+
+        <div class="sidebar-bottom">
+
+            <button id="themeToggle"
+                    class="theme-btn"
+                    onclick="toggleTheme()">
+                🌙 Dark Mode
+            </button>
+
+            <a href="/static/profile.html"
+               class="nav-item">
+                👤 Profile
+            </a>
+
+            <a href="#"
+               class="nav-item">
+                ⚙️ Settings
+            </a>
+
+            <button class="logout-btn"
+                    onclick="logoutUser()">
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <div class="page-header">
+
+            <h1>
+                🗺️ Learning Roadmap
+            </h1>
+
+            <p>
+                Follow a personalized step-by-step roadmap based on your career goals and skill gaps.
+            </p>
+
+        </div>
+
+
+        <!-- CAREER -->
+
+        <section class="career-card">
+
+            <h2 id="careerTitle">
+                Personalized Career Roadmap
+            </h2>
+
+            <p id="careerDescription">
+                Your roadmap will be generated from your CareerPath AI analysis.
+            </p>
+
+            <div class="career-info">
+
+                <span class="info-pill"
+                      id="careerPill">
+                    Career: Not selected
+                </span>
+
+                <span class="info-pill"
+                      id="stepPill">
+                    0 Learning Steps
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROGRESS -->
+
+        <section class="progress-card">
+
+            <div class="progress-heading">
+
+                <h2>
+                    Roadmap Progress
+                </h2>
+
+                <span class="progress-value"
+                      id="progressValue">
+                    0%
+                </span>
+
+            </div>
+
+            <div class="progress-track">
+
+                <div class="progress-fill"
+                     id="progressBar">
+                </div>
+
+            </div>
+
+            <p class="progress-text"
+               id="progressText">
+                Complete the learning steps in sequence to build your career readiness.
+            </p>
+
+        </section>
+
+
+        <!-- ROADMAP -->
+
+        <section class="roadmap-card">
+
+            <h2>
+                📚 Your Learning Path
+            </h2>
+
+            <p class="roadmap-description">
+                Recommended skills are arranged in a practical learning sequence.
+            </p>
+
+            <div id="roadmapList"
+                 class="roadmap-list">
+
+                <div class="loading">
+                    Loading your personalized roadmap...
+                </div>
+
+            </div>
+
+
+            <div class="action-row">
+
+                <a href="/static/learning_resources.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/learning_resources.html'; return false;">
+                    📚 Explore Learning Resources
+                </a>
+
+                <a href="/static/interview.html"
+                   class="action-btn"
+                   onclick="window.location.href='/static/interview.html'; return false;">
+                    🎤 Practice Interviews
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ==============================
+       LOGIN
+    ============================== */
+
+    function checkLogin() {
+
+        const user =
+            localStorage.getItem(
+                "careerPathUser"
+            );
+
+        if (!user) {
+
+            window.location.href =
+                "/static/login.html";
+
+        }
+
+    }
+
+
+    /* ==============================
+       LOGOUT
+    ============================== */
+
+    function logoutUser() {
+
+        localStorage.removeItem(
+            "careerPathUser"
+        );
+
+        localStorage.removeItem(
+            "careerPathProfile"
+        );
+
+        window.location.href =
+            "/static/login.html";
+
+    }
+
+
+    /* ==============================
+       THEME
+    ============================== */
+
+    function applyTheme() {
+
+        const savedTheme =
+            localStorage.getItem(
+                "careerPathTheme"
+            ) || "light";
+
+
+        document.body.classList.toggle(
+            "dark-theme",
+            savedTheme === "dark"
+        );
+
+
+        const themeToggle =
+            document.getElementById(
+                "themeToggle"
+            );
+
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+                savedTheme === "dark"
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+    function toggleTheme() {
+
+        const isDark =
+            document.body.classList.contains(
+                "dark-theme"
+            );
+
+
+        const nextTheme =
+            isDark
+                ? "light"
+                : "dark";
+
+
+        localStorage.setItem(
+            "careerPathTheme",
+            nextTheme
+        );
+
+
+        applyTheme();
+
+    }
+
+
+    /* ==============================
+       LOAD PROFILE
+    ============================== */
+
+    function getProfileData() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "careerPathProfile"
+                ) || "{}"
+            );
+
+        } catch {
+
+            return {};
+
+        }
+
+    }
+
+
+    function getResumeData() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "resumeAnalysis"
+                ) || "{}"
+            );
+
+        } catch {
+
+            return {};
+
+        }
+
+    }
+
+
+    /* ==============================
+       LOAD SAVED CAREER
+    ============================== */
+
+    function getTargetCareer() {
+
+        return (
+            localStorage.getItem(
+                "careerPathCareer"
+            ) ||
+            localStorage.getItem(
+                "recommendedCareer"
+            ) ||
+            ""
+        );
+
+    }
+
+
+    /* ==============================
+       RUN ROADMAP
+    ============================== */
+
+    async function loadRoadmap() {
+
+        const roadmapList =
+            document.getElementById(
+                "roadmapList"
+            );
+
+        const profileData =
+            getProfileData();
+
+        const resumeData =
+            getResumeData();
+
+        const savedCareer =
+            getTargetCareer();
+
+
+        /*
+         * If we have a previously generated
+         * roadmap, display it immediately.
+         */
+
+        try {
+
+            const savedRoadmap =
+                JSON.parse(
+                    localStorage.getItem(
+                        "careerPathRoadmap"
+                    ) || "null"
+                );
+
+
+            if (
+                savedRoadmap &&
+                Array.isArray(
+                    savedRoadmap.roadmap
+                ) &&
+                savedRoadmap.roadmap.length > 0
+            ) {
+
+                displayRoadmap(
+                    savedRoadmap,
+                    savedCareer
+                );
+
+                return;
+
+            }
+
+        } catch {
+
+            console.log(
+                "No saved roadmap found."
+            );
+
+        }
+
+
+        /*
+         * Generate the complete CareerPath
+         * workflow using the existing backend.
+         */
+
+        if (!resumeData.text) {
+
+            roadmapList.innerHTML = "";
+
+            const message =
+                document.createElement(
+                    "div"
+                );
+
+            message.className =
+                "empty-message";
+
+            message.textContent =
+                "Please analyze your resume first. Your personalized learning roadmap will appear here after CareerPath AI processes your resume.";
+
+            roadmapList.appendChild(
+                message
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/careerpath/analyze",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            profile:
+                                profileData,
+
+                            resume_text:
+                                resumeData.text
+
+                        })
+
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Backend returned HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "CareerPath workflow:",
+                result
+            );
+
+
+            if (!result.success) {
+
+                throw new Error(
+                    "CareerPath workflow failed."
+                );
+
+            }
+
+
+            const workflow =
+                result.workflow;
+
+
+            if (!workflow) {
+
+                throw new Error(
+                    "Workflow data is missing."
+                );
+
+            }
+
+
+            const careerAnalysis =
+                workflow.career_analysis ||
+                {};
+
+
+            const roadmap =
+                workflow.learning_roadmap ||
+                {};
+
+
+            const career =
+                careerAnalysis.recommended_career ||
+                savedCareer ||
+                "Career Path";
+
+
+            /*
+             * Save useful data for other pages.
+             */
+
+            if (career) {
+
+                localStorage.setItem(
+                    "careerPathCareer",
+                    career
+                );
+
+            }
+
+
+            if (
+                roadmap &&
+                Array.isArray(
+                    roadmap.roadmap
+                )
+            )
+            {
+
+                localStorage.setItem(
+                    "careerPathRoadmap",
+                    JSON.stringify(
+                        roadmap
+                    )
+                );
+
+            }
+
+
+            displayRoadmap(
+                roadmap,
+                career
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Roadmap Error:",
+                error
+            );
+
+
+            roadmapList.innerHTML = "";
+
+
+            const errorBox =
+                document.createElement(
+                    "div"
+                );
+
+            errorBox.className =
+                "error";
+
+            errorBox.textContent =
+                "Unable to generate the learning roadmap. Please make sure your resume has been analyzed and try again.";
+
+            roadmapList.appendChild(
+                errorBox
+            );
+
+        }
+
+    }
+
+
+    /* ==============================
+       DISPLAY ROADMAP
+    ============================== */
+
+    function displayRoadmap(
+        roadmap,
+        career
+    ) {
+
+        const roadmapList =
+            document.getElementById(
+                "roadmapList"
+            );
+
+
+        const items =
+            roadmap &&
+            Array.isArray(
+                roadmap.roadmap
+            )
+                ? roadmap.roadmap
+                : [];
+
+
+        document.getElementById(
+            "careerTitle"
+        ).textContent =
+            career +
+            " Learning Roadmap";
+
+
+        document.getElementById(
+            "careerDescription"
+        ).textContent =
+            "A personalized sequence of learning steps designed around your CareerPath AI skill-gap analysis.";
+
+
+        document.getElementById(
+            "careerPill"
+        ).textContent =
+            "Career: " +
+            career;
+
+
+        document.getElementById(
+            "stepPill"
+        ).textContent =
+            items.length +
+            " Learning Steps";
+
+
+        roadmapList.innerHTML =
+            "";
+
+
+        if (items.length === 0) {
+
+            const empty =
+                document.createElement(
+                    "div"
+                );
+
+            empty.className =
+                "empty-message";
+
+            empty.textContent =
+                "No roadmap steps were generated yet.";
+
+            roadmapList.appendChild(
+                empty
+            );
+
+            updateProgress(
+                0,
+                0
+            );
+
+            return;
+
+        }
+
+
+        items.forEach(
+            (item, index) => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "roadmap-item";
+
+
+                const number =
+                    document.createElement(
+                        "div"
+                    );
+
+                number.className =
+                    "step-number";
+
+                number.textContent =
+                    item.step ||
+                    index + 1;
+
+
+                const content =
+                    document.createElement(
+                        "div"
+                    );
+
+                content.className =
+                    "roadmap-content";
+
+
+                const title =
+                    document.createElement(
+                        "h3"
+                    );
+
+                title.textContent =
+                    item.skill ||
+                    "Learning Step " +
+                    (index + 1);
+
+
+                const description =
+                    document.createElement(
+                        "p"
+                    );
+
+                description.textContent =
+                    item.description ||
+                    "Develop this skill as part of your personalized career roadmap.";
+
+
+                const meta =
+                    document.createElement(
+                        "div"
+                    );
+
+                meta.className =
+                    "roadmap-meta";
+
+
+                if (item.duration) {
+
+                    const duration =
+                        document.createElement(
+                            "span"
+                        );
+
+                    duration.className =
+                        "meta-pill";
+
+                    duration.textContent =
+                        "⏱️ " +
+                        item.duration;
+
+                    meta.appendChild(
+                        duration
+                    );
+
+                }
+
+
+                const priority =
+                    document.createElement(
+                        "span"
+                    );
+
+                priority.className =
+                    "meta-pill";
+
+                priority.textContent =
+                    "📌 Step " +
+                    (index + 1);
+
+                meta.appendChild(
+                    priority
+                );
+
+
+                content.appendChild(
+                    title
+                );
+
+                content.appendChild(
+                    description
+                );
+
+                content.appendChild(
+                    meta
+                );
+
+
+                card.appendChild(
+                    number
+                );
+
+                card.appendChild(
+                    content
+                );
+
+
+                roadmapList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        updateProgress(
+            0,
+            items.length
+        );
+
+    }
+
+
+    /* ==============================
+       PROGRESS
+    ============================== */
+
+    function updateProgress(
+        completed,
+        total
+    ) {
+
+        const percentage =
+            total > 0
+                ? Math.round(
+                    (completed / total) * 100
+                )
+                : 0;
+
+
+        document.getElementById(
+            "progressValue"
+        ).textContent =
+            percentage +
+            "%";
+
+
+        document.getElementById(
+            "progressBar"
+        ).style.width =
+            percentage +
+            "%";
+
+
+        document.getElementById(
+            "progressText"
+        ).textContent =
+            total > 0
+                ? "Your roadmap contains " +
+                  total +
+                  " personalized learning steps."
+                : "Complete the learning steps in sequence to build your career readiness.";
+
+    }
+
+
+    /* ==============================
+       INITIALIZE
+    ============================== */
+
+    checkLogin();
+
+    applyTheme();
+
+    loadRoadmap();
+
+</script>
+
+</body>
+</html>

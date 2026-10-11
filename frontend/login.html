@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | CareerPath AI</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-logo">
+                CareerPath <span>AI</span>
+            </div>
+
+            <h1>Welcome Back</h1>
+
+            <p class="auth-subtitle">
+                Sign in to continue your personalized career journey.
+            </p>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="primary-btn auth-btn">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="loginMessage" class="auth-message"></p>
+
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+
+            <p class="auth-switch">
+                Don't have an account?
+                <a href="/static/register.html">Create Account</a>
+            </p>
+
+            <a href="/" class="back-home">
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const loginForm = document.getElementById("loginForm");
+        const loginMessage = document.getElementById("loginMessage");
+
+        loginForm.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            loginMessage.textContent = "Signing in...";
+            loginMessage.className = "auth-message";
+
+            const formData = new FormData();
+
+            formData.append("email", email);
+            formData.append("password", password);
+
+            try {
+
+                const response = await fetch(
+                    "/api/auth/login",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                const result = await response.json();
+
+                if (result.success) {
+
+                    localStorage.setItem(
+                        "careerPathUser",
+                        JSON.stringify(result.user)
+                    );
+
+                    loginMessage.textContent =
+                        "Login successful. Redirecting...";
+
+                    loginMessage.className =
+                        "auth-message success";
+
+                    setTimeout(() => {
+                        window.location.href =
+                            "/static/profile.html";
+                    }, 700);
+
+                } else {
+
+                    loginMessage.textContent =
+                        result.message;
+
+                    loginMessage.className =
+                        "auth-message error";
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                loginMessage.textContent =
+                    "Unable to connect to the server.";
+
+                loginMessage.className =
+                    "auth-message error";
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

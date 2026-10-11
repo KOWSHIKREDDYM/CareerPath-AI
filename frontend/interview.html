@@ -1,0 +1,4487 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+
+
+<head>
+
+
+
+    <meta charset="UTF-8">
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>Interview Preparation - CareerPath AI</title>
+
+
+
+    <link rel="stylesheet" href="/static/style.css">
+
+
+
+
+
+
+
+    <style>
+
+
+
+    /* Interview page-specific styles only */
+
+
+
+
+
+
+
+    .interview-container {
+
+
+
+    max-width: 1100px;
+
+
+
+    margin: 0 auto;
+
+
+
+    }
+
+
+
+
+
+
+
+    .interview-hero {
+
+
+
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+
+
+
+        color: white;
+
+
+
+        padding: 32px;
+
+
+
+        border-radius: 18px;
+
+
+
+        margin-bottom: 24px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .interview-hero h2 {
+
+
+
+        margin: 0 0 10px;
+
+
+
+        font-size: 28px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .interview-hero p {
+
+
+
+        margin: 0;
+
+
+
+        opacity: 0.9;
+
+
+
+        line-height: 1.6;
+
+
+
+    }
+
+
+
+
+
+
+
+    .interview-controls {
+
+
+
+        background: var(--surface);
+
+
+
+        border-radius: 16px;
+
+
+
+        padding: 24px;
+
+
+
+        margin-bottom: 24px;
+
+
+
+        border: 1px solid var(--border);
+
+
+
+    }
+
+
+
+
+
+
+
+    .control-grid {
+
+
+
+        display: grid;
+
+
+
+        grid-template-columns: 1fr 1fr;
+
+
+
+        gap: 18px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .control-group label {
+
+
+
+        display: block;
+
+
+
+        margin-bottom: 8px;
+
+
+
+        font-weight: 600;
+
+
+
+    }
+
+
+
+
+
+
+
+    .control-group select {
+
+
+
+        width: 100%;
+
+
+
+        padding: 12px 14px;
+
+
+
+        border-radius: 10px;
+
+
+
+        border: 1px solid var(--border);
+
+
+
+        background: var(--surface);
+
+
+
+        color: var(--text);
+
+
+
+        font-size: 15px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .generate-btn,
+
+
+
+    .submit-btn {
+
+
+
+        width: 100%;
+
+
+
+        padding: 13px;
+
+
+
+        border: none;
+
+
+
+        border-radius: 10px;
+
+
+
+        color: white;
+
+
+
+        font-size: 16px;
+
+
+
+        font-weight: 600;
+
+
+
+        cursor: pointer;
+
+
+
+    }
+
+
+
+
+
+
+
+    .generate-btn {
+
+
+
+        margin-top: 20px;
+
+
+
+        background: #4f46e5;
+
+
+
+    }
+
+
+
+
+
+
+
+    .submit-btn {
+
+
+
+        margin-top: 10px;
+
+
+
+        background: #059669;
+
+
+
+    }
+
+
+
+
+
+
+
+    .questions-section {
+
+
+
+        display: none;
+
+
+
+    }
+
+
+
+
+
+
+
+    .question-card {
+
+
+
+        background: var(--surface);
+
+
+
+        border: 1px solid var(--border);
+
+
+
+        border-radius: 16px;
+
+
+
+        padding: 24px;
+
+
+
+        margin-bottom: 18px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .question-number {
+
+
+
+        display: inline-block;
+
+
+
+        background: #eef2ff;
+
+
+
+        color: #4f46e5;
+
+
+
+        padding: 5px 10px;
+
+
+
+        border-radius: 20px;
+
+
+
+        font-size: 13px;
+
+
+
+        font-weight: 700;
+
+
+
+        margin-bottom: 12px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .question-card h3 {
+
+
+
+        margin: 0 0 18px;
+
+
+
+        line-height: 1.5;
+
+
+
+    }
+
+
+
+
+
+
+
+    .answer-box {
+
+
+
+        width: 100%;
+
+
+
+        min-height: 120px;
+
+
+
+        resize: vertical;
+
+
+
+        padding: 13px;
+
+
+
+        border-radius: 10px;
+
+
+
+        border: 1px solid var(--border);
+
+
+
+        background: var(--surface);
+
+
+
+        color: var(--text);
+
+
+
+        font-family: inherit;
+
+
+
+        font-size: 14px;
+
+
+
+        box-sizing: border-box;
+
+
+
+    }
+
+
+
+
+
+
+
+    .answer-box:focus {
+
+
+
+        outline: none;
+
+
+
+        border-color: #4f46e5;
+
+
+
+    }
+
+
+
+
+
+
+
+    .tips {
+
+
+
+        margin-top: 14px;
+
+
+
+        padding: 14px;
+
+
+
+        border-radius: 10px;
+
+
+
+        background: rgba(79, 70, 229, 0.08);
+
+
+
+        line-height: 1.6;
+
+
+
+        font-size: 14px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .tips strong {
+
+
+
+        color: #4f46e5;
+
+
+
+    }
+
+
+
+
+
+
+
+    .score-section {
+
+
+
+        display: none;
+
+
+
+        background: var(--surface);
+
+
+
+        border: 1px solid var(--border);
+
+
+
+        border-radius: 16px;
+
+
+
+        padding: 24px;
+
+
+
+        margin-top: 24px;
+
+
+
+        text-align: center;
+
+
+
+    }
+
+
+
+
+
+
+
+    .score-number {
+
+
+
+        font-size: 42px;
+
+
+
+        font-weight: 800;
+
+
+
+        color: #4f46e5;
+
+
+
+        margin: 10px 0;
+
+
+
+    }
+
+
+
+
+
+
+
+    .progress-track {
+
+
+
+        height: 10px;
+
+
+
+        background: #e5e7eb;
+
+
+
+        border-radius: 10px;
+
+
+
+        overflow: hidden;
+
+
+
+        margin: 15px 0;
+
+
+
+    }
+
+
+
+
+
+
+
+    .progress-fill {
+
+
+
+        height: 100%;
+
+
+
+        width: 0%;
+
+
+
+        background: #4f46e5;
+
+
+
+        transition: width 0.5s ease;
+
+
+
+    }
+
+
+
+
+
+
+
+    .reset-btn {
+
+
+
+        padding: 11px 20px;
+
+
+
+        border: none;
+
+
+
+        border-radius: 10px;
+
+
+
+        background: #6b7280;
+
+
+
+        color: white;
+
+
+
+        font-weight: 600;
+
+
+
+        cursor: pointer;
+
+
+
+        margin-top: 12px;
+
+
+
+    }
+
+
+
+
+
+
+
+    .evaluate-btn {
+
+
+
+        margin-top: 14px;
+
+
+
+        padding: 11px 16px;
+
+
+
+        border: 1px solid #4f46e5;
+
+
+
+        border-radius: 10px;
+
+
+
+        background: transparent;
+
+
+
+        color: #4f46e5;
+
+
+
+        font-weight: 600;
+
+
+
+        cursor: pointer;
+
+
+
+    }
+
+
+
+
+
+
+
+    .evaluate-btn:hover {
+
+
+
+        background: #4f46e5;
+
+
+
+        color: white;
+
+
+
+    }
+
+
+
+
+
+
+
+    .evaluate-btn:disabled {
+
+
+
+        opacity: 0.65;
+
+
+
+        cursor: wait;
+
+
+
+    }
+
+
+
+
+
+
+
+    .ai-evaluation {
+
+
+
+        display: none;
+
+
+
+        margin-top: 16px;
+
+
+
+        padding: 16px;
+
+
+
+        border-radius: 12px;
+
+
+
+        border: 1px solid var(--border);
+
+
+
+        background: rgba(79, 70, 229, 0.06);
+
+
+
+        line-height: 1.7;
+
+
+
+        white-space: pre-wrap;
+
+
+
+    }
+
+
+
+
+
+
+
+    .ai-evaluation-title {
+
+
+
+        font-weight: 700;
+
+
+
+        margin-bottom: 10px;
+
+
+
+        color: #4f46e5;
+
+
+
+    }
+
+
+
+
+
+
+
+    .ai-evaluation-content {
+
+
+
+        white-space: pre-wrap;
+
+
+
+    }
+
+
+
+
+
+
+
+    @media (max-width: 700px) {
+
+
+
+        .control-grid {
+
+
+
+            grid-template-columns: 1fr;
+
+
+
+        }
+
+
+
+
+
+
+
+        .interview-hero {
+
+
+
+            padding: 24px;
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+/* =========================================================
+
+   INTERVIEW PAGE - DARK MODE READABILITY FIX
+
+   Keeps interview controls readable with the shared theme.
+
+   ========================================================= */
+
+
+
+body.dark-theme .interview-hero {
+
+    background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+body.dark-theme .interview-controls,
+
+body.dark-theme .question-card,
+
+body.dark-theme .score-section {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+
+body.dark-theme .interview-controls h2,
+
+body.dark-theme .interview-controls p,
+
+body.dark-theme .question-card h3,
+
+body.dark-theme .score-section h2,
+
+body.dark-theme .control-group label {
+
+    color: var(--text) !important;
+
+}
+
+
+
+body.dark-theme .control-group select,
+
+body.dark-theme .answer-box {
+
+    background: #0f172a !important;
+
+    color: #f8fafc !important;
+
+    border-color: #334155 !important;
+
+}
+
+
+
+body.dark-theme .control-group select option {
+
+    background: #0f172a !important;
+
+    color: #f8fafc !important;
+
+}
+
+
+
+body.dark-theme .generate-btn {
+
+    background: #4f46e5 !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+body.dark-theme .submit-btn {
+
+    background: #059669 !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+body.dark-theme .evaluate-btn {
+
+    background: transparent !important;
+
+    color: #a5b4fc !important;
+
+    border-color: #6366f1 !important;
+
+}
+
+
+
+body.dark-theme .evaluate-btn:hover {
+
+    background: #4f46e5 !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+body.dark-theme .reset-btn {
+
+    background: #475569 !important;
+
+    color: #ffffff !important;
+
+}
+
+
+
+body.dark-theme .tips {
+
+    background: rgba(79, 70, 229, 0.15) !important;
+
+    color: #e2e8f0 !important;
+
+}
+
+
+
+body.dark-theme .tips strong,
+
+body.dark-theme .score-number,
+
+body.dark-theme .ai-evaluation-title {
+
+    color: #a5b4fc !important;
+
+}
+
+
+
+body.dark-theme .ai-evaluation {
+
+    background: rgba(79, 70, 229, 0.10) !important;
+
+    color: #e2e8f0 !important;
+
+    border-color: #334155 !important;
+
+}
+
+
+
+body.dark-theme .question-number {
+
+    background: #172554 !important;
+
+    color: #a5b4fc !important;
+
+}
+
+
+
+body.dark-theme .progress-track {
+
+    background: #334155 !important;
+
+}
+
+
+
+</style>
+
+
+
+</head>
+
+
+
+
+
+
+
+<body>
+
+
+
+
+
+
+
+<div class="app-layout">
+
+
+
+
+
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+
+        <div class="sidebar-logo">
+
+            <span>CareerPath</span> AI
+
+        </div>
+
+
+
+        <nav class="sidebar-nav">
+
+
+
+            <div class="nav-section">
+
+                <p>OVERVIEW</p>
+
+
+
+                <a href="/static/dashboard.html" class="nav-item">
+
+                    🏠 Dashboard
+
+                </a>
+
+            </div>
+
+
+
+            <div class="nav-section">
+
+                <p>ANALYZE</p>
+
+                <a href="/static/resume.html" class="nav-item">
+
+                    📄 Resume Analyzer
+
+                </a>
+
+                <a href="/static/career_explorer.html" class="nav-item">
+
+                    💼 Career Explorer
+
+                </a>
+
+                <a href="/static/job_description.html" class="nav-item">
+
+                    🔍 Job Description
+
+                </a>
+
+                <a href="/static/skill_gap.html" class="nav-item">
+
+                    🧩 Skill Gap Analysis
+
+                </a>
+
+                <a href="/static/resume_improvement.html" class="nav-item">
+
+                    ✨ Resume Improvement
+
+                </a>
+
+            </div>
+
+            <div class="nav-section">
+
+                <p>BUILD</p>
+
+                <a href="/static/learning_roadmap.html" class="nav-item">
+
+                    🗺️ Learning Roadmap
+
+                </a>
+
+                <a href="/static/project_recommendations.html" class="nav-item">
+
+                    🚀 Project Recommendations
+
+                </a>
+
+                <a href="/static/learning_resources.html" class="nav-item">
+
+                    📚 Learning Resources
+
+                </a>
+
+            </div>
+
+            <div class="nav-section">
+
+                <p>PRACTICE</p>
+
+                <a href="/static/career_coach.html" class="nav-item">
+
+                    🤖 AI Career Coach
+
+                </a>
+
+                <a href="/static/interview.html" class="nav-item active">
+
+                    🎤 Interview Preparation
+
+                </a>
+
+            </div>
+
+            <div class="nav-section">
+
+                <p>TRACK</p>
+
+                <a href="/static/progress.html" class="nav-item">
+
+                    📊 Progress
+
+                </a>
+
+            </div>
+
+
+
+        </nav>
+
+
+
+        <div class="sidebar-bottom">
+
+
+
+            <button
+
+                type="button"
+
+                class="theme-toggle"
+
+                id="themeToggle"
+
+                onclick="toggleTheme()"
+
+            >
+
+                🌙 Dark Mode
+
+            </button>
+
+
+
+            <a href="/static/profile.html" class="nav-item">
+
+                👤 Profile
+
+            </a>
+
+
+
+            <a href="#" class="nav-item">
+
+                ⚙️ Settings
+
+            </a>
+
+
+
+            <button
+
+                type="button"
+
+                class="logout-btn"
+
+                onclick="logout()"
+
+            >
+
+                🚪 Logout
+
+            </button>
+
+
+
+        </div>
+
+
+
+    </aside>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- MAIN -->
+
+
+
+    <main class="main-content">
+
+
+
+
+
+
+
+        <header class="topbar">
+
+
+
+            <div>
+
+
+
+                <h1>Interview Preparation 🎤</h1>
+
+
+
+                <p>Practice career-specific interview questions and prepare with confidence.</p>
+
+
+
+            </div>
+
+
+
+        </header>
+
+
+
+
+
+
+
+
+
+
+
+        <div class="interview-container">
+
+
+
+
+
+
+
+            <!-- HERO -->
+
+
+
+            <section class="interview-hero">
+
+
+
+                <h2>CareerPath Interview Coach</h2>
+
+
+
+                <p>
+
+
+
+                    Practice technical and career-specific interview questions
+
+
+
+                    based on your selected career path.
+
+
+
+                </p>
+
+
+
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+            <!-- CONTROLS -->
+
+
+
+            <section class="interview-controls">
+
+
+
+
+
+
+
+                <h2>Start Interview Practice</h2>
+
+
+
+                <p>Select your target career and interview difficulty.</p>
+
+
+
+
+
+
+
+                <div class="control-grid">
+
+
+
+
+
+
+
+                    <div class="control-group">
+
+
+
+                        <label for="careerSelect">Target Career</label>
+
+
+
+
+
+
+
+                        <select id="careerSelect">
+
+
+
+                            <option value="Data Scientist">Data Scientist</option>
+
+
+
+                            <option value="Software Developer">Software Developer</option>
+
+
+
+                            <option value="Machine Learning Engineer">
+
+
+
+                                Machine Learning Engineer
+
+
+
+                            </option>
+
+
+
+                            <option value="AI Engineer">AI Engineer</option>
+
+
+
+                            <option value="Full Stack Developer">
+
+
+
+                                Full Stack Developer
+
+
+
+                            </option>
+
+
+
+                        </select>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                    <div class="control-group">
+
+
+
+                        <label for="difficultySelect">Difficulty</label>
+
+
+
+
+
+
+
+                        <select id="difficultySelect">
+
+
+
+                            <option value="Beginner">Beginner</option>
+
+
+
+                            <option value="Intermediate">Intermediate</option>
+
+
+
+                            <option value="Advanced">Advanced</option>
+
+
+
+                        </select>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <button type="button" class="generate-btn" onclick="generateInterview()">
+
+
+
+                    🎯 Generate Interview Questions
+
+
+
+                </button>
+
+
+
+
+
+
+
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+            <!-- QUESTIONS -->
+
+
+
+            <section class="questions-section" id="questionsSection">
+
+
+
+
+
+
+
+                <h2>Interview Questions</h2>
+
+
+
+
+
+
+
+                <div id="questionsContainer"></div>
+
+
+
+
+
+
+
+                <button type="button" class="submit-btn" onclick="submitInterview()">
+
+
+
+                    ✅ Submit Interview
+
+
+
+                </button>
+
+
+
+
+
+
+
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+            <!-- SCORE -->
+
+
+
+            <section class="score-section" id="scoreSection">
+
+
+
+
+
+
+
+                <h2>Interview Practice Result</h2>
+
+
+
+
+
+
+
+                <div class="score-number" id="scoreNumber">0%</div>
+
+
+
+
+
+
+
+                <div class="progress-track">
+
+
+
+                    <div class="progress-fill" id="scoreProgress"></div>
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <p id="scoreMessage"></p>
+
+
+
+
+
+
+
+                <button type="button" class="reset-btn" onclick="resetInterview()">
+
+
+
+                    🔄 Practice Again
+
+
+
+                </button>
+
+
+
+
+
+
+
+            </section>
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+    </main>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       LOGIN CHECK
+
+
+
+    ================================= */
+
+
+
+
+
+
+
+    function requireLogin() {
+
+
+
+
+
+
+
+        const user = localStorage.getItem("careerPathUser");
+
+
+
+
+
+
+
+        if (!user) {
+
+
+
+            window.location.href = "/static/login.html";
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    requireLogin();
+
+
+
+
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       THEME
+
+
+
+    ================================= */
+
+    function applyTheme() {
+
+
+
+        const savedTheme =
+
+            localStorage.getItem("careerPathTheme") || "light";
+
+
+
+        document.body.classList.toggle(
+
+            "dark-theme",
+
+            savedTheme === "dark"
+
+        );
+
+
+
+        const themeToggle =
+
+            document.getElementById("themeToggle");
+
+
+
+        if (themeToggle) {
+
+            themeToggle.textContent =
+
+                savedTheme === "dark"
+
+                    ? "☀️ Light Mode"
+
+                    : "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+
+    function toggleTheme() {
+
+
+
+        const isDark =
+
+            document.body.classList.contains("dark-theme");
+
+
+
+        const nextTheme = isDark ? "light" : "dark";
+
+
+
+        localStorage.setItem(
+
+            "careerPathTheme",
+
+            nextTheme
+
+        );
+
+
+
+        applyTheme();
+
+    }
+
+
+
+    applyTheme();
+
+
+
+
+
+    /* ================================
+
+       INTERVIEW QUESTION BANK
+
+    ================================= */
+
+
+
+
+
+
+
+    const questionBank = {
+
+
+
+
+
+
+
+        "Data Scientist": {
+
+
+
+
+
+
+
+            Beginner: [
+
+
+
+                {
+
+
+
+                    question: "What is the difference between supervised and unsupervised learning?",
+
+
+
+                    tip: "Explain the difference using examples such as classification and clustering."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between mean, median and mode?",
+
+
+
+                    tip: "Mention when each statistical measure is useful."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the purpose of Pandas in data science?",
+
+
+
+                    tip: "Talk about data manipulation, cleaning and DataFrames."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is overfitting in machine learning?",
+
+
+
+                    tip: "Explain how a model can perform well on training data but poorly on unseen data."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "Why is data preprocessing important?",
+
+
+
+                    tip: "Mention missing values, duplicates, outliers, scaling and encoding."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Intermediate: [
+
+
+
+                {
+
+
+
+                    question: "How would you handle missing values in a dataset?",
+
+
+
+                    tip: "Discuss deletion, mean/median/mode imputation and model-based approaches."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "Explain precision, recall and F1-score.",
+
+
+
+                    tip: "Explain the trade-off between false positives and false negatives."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How do you detect and handle outliers?",
+
+
+
+                    tip: "Mention IQR, Z-score and domain knowledge."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is cross-validation and why is it useful?",
+
+
+
+                    tip: "Explain how it estimates model generalization."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you select the most important features for a machine learning model?",
+
+
+
+                    tip: "Discuss correlation, feature importance, statistical tests and regularization."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Advanced: [
+
+
+
+                {
+
+
+
+                    question: "How would you design an end-to-end machine learning pipeline for a production system?",
+
+
+
+                    tip: "Cover data ingestion, preprocessing, training, validation, deployment and monitoring."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you deal with severe class imbalance?",
+
+
+
+                    tip: "Discuss resampling, class weights, threshold tuning and suitable evaluation metrics."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you detect data drift in a production ML system?",
+
+
+
+                    tip: "Explain monitoring feature distributions and model performance over time."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you explain a complex machine learning model to a non-technical stakeholder?",
+
+
+
+                    tip: "Focus on business impact, interpretability and simple examples."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you prevent data leakage during model training?",
+
+
+
+                    tip: "Explain train/test separation and applying preprocessing only using training data."
+
+
+
+                }
+
+
+
+            ]
+
+
+
+        },
+
+
+
+
+
+
+
+
+
+
+
+        "Software Developer": {
+
+
+
+
+
+
+
+            Beginner: [
+
+
+
+                {
+
+
+
+                    question: "What is the difference between a stack and a queue?",
+
+
+
+                    tip: "Explain LIFO versus FIFO with a practical example."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is object-oriented programming?",
+
+
+
+                    tip: "Discuss encapsulation, inheritance, polymorphism and abstraction."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between an array and a linked list?",
+
+
+
+                    tip: "Compare memory layout, access time and insertion/deletion."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is Git and why is it used?",
+
+
+
+                    tip: "Mention version control, collaboration and history tracking."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is an API?",
+
+
+
+                    tip: "Explain how applications communicate through defined interfaces."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Intermediate: [
+
+
+
+                {
+
+
+
+                    question: "What is the difference between REST and SOAP?",
+
+
+
+                    tip: "Compare architecture, data formats and typical use cases."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is time complexity?",
+
+
+
+                    tip: "Explain Big-O notation with examples."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How does a hash table work?",
+
+
+
+                    tip: "Discuss hashing, buckets, collisions and average lookup complexity."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is database normalization?",
+
+
+
+                    tip: "Explain how normalization reduces redundancy and update anomalies."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between authentication and authorization?",
+
+
+
+                    tip: "Authentication verifies identity; authorization determines permissions."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Advanced: [
+
+
+
+                {
+
+
+
+                    question: "How would you design a scalable web application?",
+
+
+
+                    tip: "Discuss load balancing, caching, databases, horizontal scaling and monitoring."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between SQL and NoSQL databases?",
+
+
+
+                    tip: "Compare structure, consistency, scalability and use cases."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you debug a production performance issue?",
+
+
+
+                    tip: "Discuss logs, metrics, profiling and identifying bottlenecks."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "Explain the SOLID principles.",
+
+
+
+                    tip: "Give practical examples rather than only defining the five principles."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you design a reliable REST API?",
+
+
+
+                    tip: "Discuss validation, status codes, authentication, error handling and versioning."
+
+
+
+                }
+
+
+
+            ]
+
+
+
+        },
+
+
+
+
+
+
+
+
+
+
+
+        "Machine Learning Engineer": {
+
+
+
+
+
+
+
+            Beginner: [
+
+
+
+                {
+
+
+
+                    question: "What is machine learning?",
+
+
+
+                    tip: "Explain learning patterns from data instead of explicitly programming every rule."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between classification and regression?",
+
+
+
+                    tip: "Classification predicts categories; regression predicts continuous values."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is a training dataset?",
+
+
+
+                    tip: "Explain how training data is used to learn model parameters."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is scikit-learn?",
+
+
+
+                    tip: "Mention common machine learning algorithms and preprocessing utilities."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "Why do we split data into training and testing sets?",
+
+
+
+                    tip: "Explain evaluating performance on unseen data."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Intermediate: [
+
+
+
+                {
+
+
+
+                    question: "What is regularization?",
+
+
+
+                    tip: "Explain how L1 and L2 regularization can reduce overfitting."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is gradient descent?",
+
+
+
+                    tip: "Explain how model parameters are updated to minimize a loss function."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between bagging and boosting?",
+
+
+
+                    tip: "Compare parallel ensemble learning with sequential error correction."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is model deployment?",
+
+
+
+                    tip: "Explain serving a trained model so applications can use its predictions."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is MLOps?",
+
+
+
+                    tip: "Discuss automation, deployment, monitoring and lifecycle management."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Advanced: [
+
+
+
+                {
+
+
+
+                    question: "How would you deploy a machine learning model at scale?",
+
+
+
+                    tip: "Discuss APIs, containers, orchestration, autoscaling and monitoring."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you monitor a deployed ML model?",
+
+
+
+                    tip: "Cover latency, errors, drift, prediction distribution and model performance."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What strategies can reduce inference latency?",
+
+
+
+                    tip: "Discuss batching, caching, quantization, smaller models and hardware acceleration."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you version datasets and models?",
+
+
+
+                    tip: "Discuss reproducibility and tracking model/data lineage."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between model training and model serving?",
+
+
+
+                    tip: "Explain offline learning versus online inference."
+
+
+
+                }
+
+
+
+            ]
+
+
+
+        },
+
+
+
+
+
+
+
+
+
+
+
+        "AI Engineer": {
+
+
+
+
+
+
+
+            Beginner: [
+
+
+
+                {
+
+
+
+                    question: "What is artificial intelligence?",
+
+
+
+                    tip: "Explain the broader concept and how machine learning fits inside AI."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is deep learning?",
+
+
+
+                    tip: "Explain neural networks with multiple layers."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is Generative AI?",
+
+
+
+                    tip: "Explain models that generate text, images, code or other content."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is an LLM?",
+
+
+
+                    tip: "Explain large language models and their ability to process and generate text."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is prompt engineering?",
+
+
+
+                    tip: "Explain how instructions can guide model behavior and output."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Intermediate: [
+
+
+
+                {
+
+
+
+                    question: "What is Retrieval-Augmented Generation (RAG)?",
+
+
+
+                    tip: "Explain retrieving external knowledge and providing it to an LLM."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between fine-tuning and prompting?",
+
+
+
+                    tip: "Compare modifying model parameters with providing instructions at inference time."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is an AI agent?",
+
+
+
+                    tip: "Discuss goals, reasoning, tools and actions."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "Why are embeddings useful in AI applications?",
+
+
+
+                    tip: "Explain representing semantic information as vectors."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What are hallucinations in LLMs?",
+
+
+
+                    tip: "Explain incorrect generated information and ways to reduce it."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Advanced: [
+
+
+
+                {
+
+
+
+                    question: "How would you design a production RAG system?",
+
+
+
+                    tip: "Discuss ingestion, chunking, embeddings, vector search, retrieval, generation and evaluation."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you evaluate an LLM-based application?",
+
+
+
+                    tip: "Discuss accuracy, relevance, groundedness, latency and human evaluation."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you design an agentic AI system?",
+
+
+
+                    tip: "Discuss agents, tools, orchestration, memory, planning and guardrails."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you reduce hallucinations in a production LLM application?",
+
+
+
+                    tip: "Discuss grounding, retrieval, constrained prompts and evaluation."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What challenges arise when deploying LLMs in production?",
+
+
+
+                    tip: "Discuss latency, cost, context limits, reliability, security and monitoring."
+
+
+
+                }
+
+
+
+            ]
+
+
+
+        },
+
+
+
+
+
+
+
+
+
+
+
+        "Full Stack Developer": {
+
+
+
+
+
+
+
+            Beginner: [
+
+
+
+                {
+
+
+
+                    question: "What is HTML?",
+
+
+
+                    tip: "Explain its role in structuring web pages."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is CSS?",
+
+
+
+                    tip: "Explain styling, layout and responsive design."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is JavaScript?",
+
+
+
+                    tip: "Explain how it adds behavior and interactivity to web applications."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is the difference between frontend and backend?",
+
+
+
+                    tip: "Explain client-side versus server-side responsibilities."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is a database?",
+
+
+
+                    tip: "Explain persistent storage and basic CRUD operations."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Intermediate: [
+
+
+
+                {
+
+
+
+                    question: "What is React and why is it used?",
+
+
+
+                    tip: "Discuss components, state and reusable UI."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is Node.js?",
+
+
+
+                    tip: "Explain JavaScript runtime capabilities on the server."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is middleware?",
+
+
+
+                    tip: "Explain processing requests between the client and application logic."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "What is CORS?",
+
+
+
+                    tip: "Explain cross-origin browser security and API access."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How does a REST API work?",
+
+
+
+                    tip: "Discuss HTTP methods, resources, requests and responses."
+
+
+
+                }
+
+
+
+            ],
+
+
+
+
+
+
+
+            Advanced: [
+
+
+
+                {
+
+
+
+                    question: "How would you design a scalable full-stack application?",
+
+
+
+                    tip: "Discuss frontend architecture, APIs, caching, databases and deployment."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you secure a web application?",
+
+
+
+                    tip: "Discuss authentication, authorization, input validation, HTTPS and secure storage."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you optimize a slow web application?",
+
+
+
+                    tip: "Discuss frontend performance, backend profiling, caching and database optimization."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you design authentication for a modern web application?",
+
+
+
+                    tip: "Discuss sessions or tokens, password hashing and authorization."
+
+
+
+                },
+
+
+
+                {
+
+
+
+                    question: "How would you structure a large React application?",
+
+
+
+                    tip: "Discuss reusable components, state management, routing and separation of concerns."
+
+
+
+                }
+
+
+
+            ]
+
+
+
+        }
+
+
+
+
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       GENERATE INTERVIEW
+
+
+
+    ================================= */
+
+
+
+
+
+
+
+    function generateInterview() {
+
+
+
+
+
+
+
+        const career =
+
+
+
+            document.getElementById("careerSelect").value;
+
+
+
+
+
+
+
+        const difficulty =
+
+
+
+            document.getElementById("difficultySelect").value;
+
+
+
+
+
+
+
+        const questions =
+
+
+
+            questionBank[career]?.[difficulty];
+
+
+
+
+
+
+
+        if (!questions) {
+
+
+
+            alert("Interview questions are not available for this career and difficulty.");
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        const container =
+
+
+
+            document.getElementById("questionsContainer");
+
+
+
+
+
+
+
+        container.innerHTML = "";
+
+
+
+
+
+
+
+        questions.forEach((item, index) => {
+
+
+
+
+
+
+
+            const card =
+
+
+
+                document.createElement("div");
+
+
+
+
+
+
+
+            card.className = "question-card";
+
+
+
+
+
+
+
+            card.innerHTML = `
+
+
+
+                <div class="question-number">
+
+
+
+                    Question ${index + 1}
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <h3>${item.question}</h3>
+
+
+
+
+
+
+
+                <textarea
+
+
+
+                    class="answer-box"
+
+
+
+                    placeholder="Type your answer here..."
+
+
+
+                    data-question="${index}">
+
+
+
+                </textarea>
+
+
+
+
+
+
+
+                <div class="tips">
+
+
+
+                    <strong>💡 Interview Tip:</strong>
+
+
+
+                    ${item.tip}
+
+
+
+                </div>
+
+
+
+
+
+
+
+                <button
+
+
+
+                    type="button"
+
+
+
+                    class="evaluate-btn"
+
+
+
+                    onclick="evaluateAnswer(this, ${index})">
+
+
+
+                    🤖 Evaluate with CareerPath AI
+
+
+
+                </button>
+
+
+
+
+
+
+
+                <div
+
+
+
+                    class="ai-evaluation"
+
+
+
+                    id="evaluation-${index}">
+
+
+
+                </div>
+
+
+
+            `;
+
+
+
+
+
+
+
+            container.appendChild(card);
+
+
+
+        });
+
+
+
+
+
+
+
+        document.getElementById("questionsSection").style.display = "block";
+
+
+
+
+
+
+
+        document.getElementById("scoreSection").style.display = "none";
+
+
+
+
+
+
+
+        window.scrollTo({
+
+
+
+            top: document.getElementById("questionsSection").offsetTop - 20,
+
+
+
+            behavior: "smooth"
+
+
+
+        });
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       SUBMIT INTERVIEW
+
+
+
+    ================================= */
+
+
+
+
+
+
+
+    function submitInterview() {
+
+
+
+
+
+
+
+        const textareas = document.querySelectorAll(".answer-box");
+
+
+
+
+
+
+
+        let answered = 0;
+
+
+
+
+
+
+
+        textareas.forEach(textarea => {
+
+
+
+            if (textarea.value.trim().length > 20) {
+
+
+
+                answered++;
+
+
+
+            }
+
+
+
+        });
+
+
+
+
+
+
+
+        const total = textareas.length;
+
+
+
+
+
+
+
+        if (total === 0) {
+
+
+
+            alert("Please generate interview questions first.");
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        if (answered === 0) {
+
+
+
+            alert("Please answer at least one interview question.");
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        const score = Math.round((answered / total) * 100);
+
+
+
+
+
+
+
+        const scoreNumber = document.getElementById("scoreNumber");
+
+
+
+        const scoreProgress = document.getElementById("scoreProgress");
+
+
+
+        const scoreMessage = document.getElementById("scoreMessage");
+
+
+
+        const scoreSection = document.getElementById("scoreSection");
+
+
+
+
+
+
+
+        if (scoreNumber) scoreNumber.textContent = `${score}%`;
+
+
+
+        if (scoreProgress) scoreProgress.style.width = `${score}%`;
+
+
+
+
+
+
+
+        if (scoreMessage) {
+
+
+
+            if (score >= 80) {
+
+
+
+                scoreMessage.textContent =
+
+
+
+                    "Excellent practice completion. You are ready for a deeper interview round!";
+
+
+
+            } else if (score >= 50) {
+
+
+
+                scoreMessage.textContent =
+
+
+
+                    "Good start. Review the unanswered questions and strengthen your explanations.";
+
+
+
+            } else {
+
+
+
+                scoreMessage.textContent =
+
+
+
+                    "Keep practicing. Try to answer more questions with clear technical explanations.";
+
+
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+        if (scoreSection) {
+
+
+
+            scoreSection.style.display = "block";
+
+
+
+            scoreSection.scrollIntoView({
+
+
+
+                behavior: "smooth",
+
+
+
+                block: "start"
+
+
+
+            });
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       AI ANSWER EVALUATION
+
+
+
+    ================================= */
+
+
+
+
+
+
+
+    async function evaluateAnswer(button, index) {
+
+
+
+
+
+
+
+        const textarea =
+
+
+
+            document.querySelector(`.answer-box[data-question="${index}"]`);
+
+
+
+
+
+
+
+        const resultBox =
+
+
+
+            document.getElementById(`evaluation-${index}`);
+
+
+
+
+
+
+
+        const career =
+
+
+
+            document.getElementById("careerSelect").value;
+
+
+
+
+
+
+
+        const question =
+
+
+
+            textarea?.closest(".question-card")?.querySelector("h3")?.textContent || "";
+
+
+
+
+
+
+
+        const answer =
+
+
+
+            textarea ? textarea.value.trim() : "";
+
+
+
+
+
+
+
+        if (!answer) {
+
+
+
+            alert("Please write your answer before asking CareerPath AI to evaluate it.");
+
+
+
+            return;
+
+
+
+        }
+
+
+
+
+
+
+
+        if (!resultBox) return;
+
+
+
+
+
+
+
+        button.disabled = true;
+
+
+
+        button.textContent = "🤖 Evaluating...";
+
+
+
+
+
+
+
+        resultBox.style.display = "block";
+
+
+
+        resultBox.textContent =
+
+
+
+            "CareerPath AI is evaluating your answer. Please wait...";
+
+
+
+
+
+
+
+        try {
+
+
+
+            const response = await fetch("/api/interview-evaluate", {
+
+
+
+                method: "POST",
+
+
+
+                headers: {
+
+
+
+                    "Content-Type": "application/json"
+
+
+
+                },
+
+
+
+                body: JSON.stringify({
+
+
+
+                    career: career,
+
+
+
+                    question: question,
+
+
+
+                    answer: answer
+
+
+
+                })
+
+
+
+            });
+
+
+
+
+
+
+
+            const data = await response.json();
+
+
+
+
+
+
+
+            if (!response.ok || !data.success) {
+
+
+
+                throw new Error(
+
+
+
+                    data.message || "Interview evaluation failed."
+
+
+
+                );
+
+
+
+            }
+
+
+
+
+
+
+
+            resultBox.innerHTML = `
+
+
+
+                <div class="ai-evaluation-title">
+
+
+
+                    🤖 CareerPath AI Evaluation
+
+
+
+                </div>
+
+
+
+                <div class="ai-evaluation-content"></div>
+
+
+
+            `;
+
+
+
+
+
+
+
+            resultBox.querySelector(".ai-evaluation-content").textContent =
+
+
+
+                data.evaluation || "No evaluation returned.";
+
+
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error("Interview evaluation error:", error);
+
+
+
+            resultBox.textContent =
+
+
+
+                "❌ " + (error.message || "Unable to evaluate the answer right now.");
+
+
+
+        } finally {
+
+
+
+            button.disabled = false;
+
+
+
+            button.textContent = "🤖 Evaluate with CareerPath AI";
+
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       RESET
+
+
+
+    ================================= */
+
+
+
+
+
+
+
+    function resetInterview() {
+
+
+
+
+
+
+
+        document.getElementById("questionsSection").style.display =
+
+
+
+            "none";
+
+
+
+
+
+
+
+        document.getElementById("scoreSection").style.display =
+
+
+
+            "none";
+
+
+
+
+
+
+
+        document.getElementById("questionsContainer").innerHTML = "";
+
+
+
+
+
+
+
+        const scoreNumber = document.getElementById("scoreNumber");
+
+
+
+        const scoreProgress = document.getElementById("scoreProgress");
+
+
+
+        const scoreMessage = document.getElementById("scoreMessage");
+
+
+
+
+
+
+
+        if (scoreNumber) scoreNumber.textContent = "0%";
+
+
+
+        if (scoreProgress) scoreProgress.style.width = "0%";
+
+
+
+        if (scoreMessage) scoreMessage.textContent = "";
+
+
+
+
+
+
+
+        window.scrollTo({
+
+
+
+            top: 0,
+
+
+
+            behavior: "smooth"
+
+
+
+        });
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /* ================================
+
+
+
+       LOGOUT
+
+
+
+    ================================= */
+
+
+
+
+
+
+
+    function logout() {
+
+
+
+
+
+
+
+        localStorage.removeItem("careerPathUser");
+
+
+
+
+
+
+
+        window.location.href =
+
+
+
+            "/static/login.html";
+
+
+
+    }
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
