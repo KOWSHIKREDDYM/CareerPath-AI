@@ -23,6 +23,99 @@ app = FastAPI(
 
 init_database()
 
+
+@app.post("/api/profile/save")
+async def save_profile(
+    user_id: int = Form(...),
+    branch: str = Form(""),
+    year: str = Form(""),
+    current_skills: str = Form(""),
+    target_career: str = Form("")
+):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    user = cursor.execute(
+        "SELECT id FROM users WHERE id = ?",
+        (user_id,)
+    ).fetchone()
+
+    if not user:
+        connection.close()
+        return {
+            "success": False,
+            "message": "User not found. Please log in again."
+        }
+
+    existing_profile = cursor.execute(
+        "SELECT id FROM profiles WHERE user_id = ? ORDER BY id DESC LIMIT 1",
+        (user_id,)
+    ).fetchone()
+
+    if existing_profile:
+        cursor.execute(
+            """
+            UPDATE profiles
+            SET branch = ?, year = ?, current_skills = ?, target_career = ?
+            WHERE id = ?
+            """,
+            (
+                branch,
+                year,
+                current_skills,
+                target_career,
+                existing_profile["id"]
+            )
+        )
+    else:
+        cursor.execute(
+            """
+            INSERT INTO profiles
+                (user_id, branch, year, current_skills, target_career)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (user_id, branch, year, current_skills, target_career)
+        )
+
+    connection.commit()
+    connection.close()
+
+    return {
+        "success": True,
+        "message": "Profile saved to database."
+    }
+
+
+@app.get("/api/profile/{user_id}")
+async def get_profile(user_id: int):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    profile = cursor.execute(
+        """
+        SELECT branch, year, current_skills, target_career
+        FROM profiles
+        WHERE user_id = ?
+        ORDER BY id DESC
+        LIMIT 1
+        """,
+        (user_id,)
+    ).fetchone()
+
+    connection.close()
+
+    if not profile:
+        return {
+            "success": True,
+            "profile": None
+        }
+
+    return {
+        "success": True,
+        "profile": dict(profile)
+    }
+
+
 @app.post("/api/auth/register")
 async def register_user(
     name: str = Form(...),

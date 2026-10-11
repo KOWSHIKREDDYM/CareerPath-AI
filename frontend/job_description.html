@@ -946,20 +946,12 @@ We are looking for a Software Developer with experience in Java, Spring Boot, RE
        LOGOUT
     ========================= */
 
-    function logoutUser() {
+    
+function logoutUser() {
+    localStorage.removeItem("careerPathUser");
+    window.location.href = "/static/login.html";
+}
 
-        localStorage.removeItem(
-            "careerPathUser"
-        );
-
-        localStorage.removeItem(
-            "careerPathProfile"
-        );
-
-        window.location.href =
-            "/static/login.html";
-
-    }
 
 
     /* =========================

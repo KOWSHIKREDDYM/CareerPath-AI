@@ -26,10 +26,10 @@ function requireLogin() {
 }
 
 
+
+
 function logoutUser() {
     localStorage.removeItem("careerPathUser");
-    localStorage.removeItem("careerPathProfile");
-    localStorage.removeItem("resumeAnalysis");
-
     window.location.href = "/static/login.html";
 }
+

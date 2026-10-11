@@ -891,15 +891,13 @@
        LOGOUT
     ============================== */
 
-    function logoutUser() {
+   
+function logoutUser() {
+    localStorage.removeItem("careerPathUser");
 
-        localStorage.removeItem("careerPathUser");
-        localStorage.removeItem("careerPathProfile");
+    window.location.href = "/static/login.html";
+}
 
-        window.location.href =
-            "/static/login.html";
-
-    }
 
 
     /* ==============================

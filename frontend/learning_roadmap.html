@@ -743,20 +743,11 @@
        LOGOUT
     ============================== */
 
-    function logoutUser() {
-
-        localStorage.removeItem(
-            "careerPathUser"
-        );
-
-        localStorage.removeItem(
-            "careerPathProfile"
-        );
-
-        window.location.href =
-            "/static/login.html";
-
-    }
+    
+function logoutUser() {
+    localStorage.removeItem("careerPathUser");
+    window.location.href = "/static/login.html";
+}
 
 
     /* ==============================

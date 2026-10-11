@@ -333,7 +333,7 @@
       }
         document
             .getElementById("profileForm")
-            .addEventListener("submit", function(event) {
+            .addEventListener("submit", async function(event) {
 
                 event.preventDefault();
 
@@ -360,16 +360,55 @@
                 };
 
 
-                localStorage.setItem(
-                    "careerPathProfile",
-                    JSON.stringify(profile)
-                );
+                
+const user = JSON.parse(
+    localStorage.getItem("careerPathUser") || "null"
+);
 
+if (!user || !user.id) {
+    alert("Please log in again to save your profile.");
+    window.location.href = "/static/login.html";
+    return;
+}
 
-                window.location.href =
-                    "/static/resume.html";
+try {
+    const formData = new FormData();
+
+    formData.append("user_id", user.id);
+    formData.append("branch", profile.branch);
+    formData.append("year", profile.year);
+    formData.append("current_skills", profile.skills);
+    formData.append("target_career", profile.career);
+
+    const response = await fetch("/api/profile/save", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+        alert(result.message || "Could not save your profile.");
+        return;
+    }
+
+    // Keep the existing browser-based profile for current features.
+    localStorage.setItem(
+        "careerPathProfile",
+        JSON.stringify(profile)
+    );
+
+    console.log("Profile saved to database and localStorage.");
+
+    window.location.href = "/static/resume.html";
+
+} catch (error) {
+    console.error("Profile save failed:", error);
+    alert("Unable to save your profile. Please check your connection and try again.");
+}
 
             });
+
 
     </script>
 

@@ -935,20 +935,12 @@
        LOGOUT
     ========================= */
 
-    function logoutUser() {
+    
+function logoutUser() {
+    localStorage.removeItem("careerPathUser");
+    window.location.href = "/static/login.html";
+}
 
-        localStorage.removeItem(
-            "careerPathUser"
-        );
-
-        localStorage.removeItem(
-            "careerPathProfile"
-        );
-
-        window.location.href =
-            "/static/login.html";
-
-    }
 
 
     /* =========================
