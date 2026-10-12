@@ -15,6 +15,10 @@ from backend.career_coach_agent import career_coach
 
 import io
 
+import os
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 app = FastAPI(
     title="CareerPath AI",
     description="Agentic AI Career Guidance Platform",
@@ -22,6 +26,7 @@ app = FastAPI(
 )
 
 init_database()
+
 
 
 @app.post("/api/profile/save")
@@ -33,87 +38,108 @@ async def save_profile(
     target_career: str = Form("")
 ):
     connection = get_connection()
-    cursor = connection.cursor()
+    is_postgres = bool(DATABASE_URL)
 
-    user = cursor.execute(
-        "SELECT id FROM users WHERE id = ?",
-        (user_id,)
-    ).fetchone()
+    try:
+        cursor = connection.cursor()
+        placeholder = "%s" if is_postgres else "?"
 
-    if not user:
-        connection.close()
+        user = cursor.execute(
+            f"SELECT id FROM users WHERE id = {placeholder}",
+            (user_id,)
+        ).fetchone()
+
+        if not user:
+            return {
+                "success": False,
+                "message": "User not found. Please log in again."
+            }
+
+        existing_profile = cursor.execute(
+            f"""
+            SELECT id FROM profiles
+            WHERE user_id = {placeholder}
+            ORDER BY id DESC LIMIT 1
+            """,
+            (user_id,)
+        ).fetchone()
+
+        if existing_profile:
+            cursor.execute(
+                f"""
+                UPDATE profiles
+                SET branch = {placeholder},
+                    year = {placeholder},
+                    current_skills = {placeholder},
+                    target_career = {placeholder}
+                WHERE id = {placeholder}
+                """,
+                (
+                    branch,
+                    year,
+                    current_skills,
+                    target_career,
+                    existing_profile["id"]
+                )
+            )
+        else:
+            cursor.execute(
+                f"""
+                INSERT INTO profiles
+                    (user_id, branch, year, current_skills, target_career)
+                VALUES ({placeholder}, {placeholder}, {placeholder},
+                        {placeholder}, {placeholder})
+                """,
+                (user_id, branch, year, current_skills, target_career)
+            )
+
+        connection.commit()
+
         return {
-            "success": False,
-            "message": "User not found. Please log in again."
+            "success": True,
+            "message": "Profile saved to database."
         }
 
-    existing_profile = cursor.execute(
-        "SELECT id FROM profiles WHERE user_id = ? ORDER BY id DESC LIMIT 1",
-        (user_id,)
-    ).fetchone()
+    finally:
+        connection.close()
 
-    if existing_profile:
-        cursor.execute(
-            """
-            UPDATE profiles
-            SET branch = ?, year = ?, current_skills = ?, target_career = ?
-            WHERE id = ?
-            """,
-            (
-                branch,
-                year,
-                current_skills,
-                target_career,
-                existing_profile["id"]
-            )
-        )
-    else:
-        cursor.execute(
-            """
-            INSERT INTO profiles
-                (user_id, branch, year, current_skills, target_career)
-            VALUES (?, ?, ?, ?, ?)
-            """,
-            (user_id, branch, year, current_skills, target_career)
-        )
 
-    connection.commit()
-    connection.close()
-
-    return {
-        "success": True,
-        "message": "Profile saved to database."
-    }
 
 
 @app.get("/api/profile/{user_id}")
 async def get_profile(user_id: int):
     connection = get_connection()
-    cursor = connection.cursor()
+    is_postgres = bool(DATABASE_URL)
 
-    profile = cursor.execute(
-        """
-        SELECT branch, year, current_skills, target_career
-        FROM profiles
-        WHERE user_id = ?
-        ORDER BY id DESC
-        LIMIT 1
-        """,
-        (user_id,)
-    ).fetchone()
+    try:
+        cursor = connection.cursor()
+        placeholder = "%s" if is_postgres else "?"
 
-    connection.close()
+        profile = cursor.execute(
+            f"""
+            SELECT branch, year, current_skills, target_career
+            FROM profiles
+            WHERE user_id = {placeholder}
+            ORDER BY id DESC
+            LIMIT 1
+            """,
+            (user_id,)
+        ).fetchone()
 
-    if not profile:
+        if not profile:
+            return {
+                "success": True,
+                "profile": None
+            }
+
         return {
             "success": True,
-            "profile": None
+            "profile": dict(profile)
         }
 
-    return {
-        "success": True,
-        "profile": dict(profile)
-    }
+    finally:
+        connection.close()
+
 
 
 @app.post("/api/auth/register")
@@ -138,37 +164,53 @@ async def register_user(
         }
 
     connection = get_connection()
-    cursor = connection.cursor()
 
-    existing_user = cursor.execute(
-        "SELECT id FROM users WHERE email = ?",
-        (email,)
-    ).fetchone()
+    try:
+       cursor = connection.cursor()
 
-    if existing_user:
-        connection.close()
-        return {
+       if DATABASE_URL:
+         existing_user = cursor.execute(
+           "SELECT id FROM users WHERE email = %s",
+           (email,)
+        ).fetchone()
+       else:
+           existing_user = cursor.execute(
+            "SELECT id FROM users WHERE email = ?",
+            (email,)
+        ).fetchone()
+
+       if existing_user:
+         connection.close()
+         return {
             "success": False,
             "message": "An account with this email already exists."
         }
 
-    password_hash = hash_password(password)
+       password_hash = hash_password(password)
 
-    cursor.execute(
-        """
-        INSERT INTO users (name, email, password_hash)
-        VALUES (?, ?, ?)
-        """,
-        (name, email, password_hash)
-    )
+       if DATABASE_URL:
+        cursor.execute(
+            """
+            INSERT INTO users (name, email, password_hash)
+            VALUES (%s, %s, %s)
+            RETURNING id
+            """,
+            (name, email, password_hash)
+        )
+        user_id = cursor.fetchone()["id"]
+       else:
+        cursor.execute(
+            """
+            INSERT INTO users (name, email, password_hash)
+            VALUES (?, ?, ?)
+            """,
+            (name, email, password_hash)
+        )
+        user_id = cursor.lastrowid
 
-    connection.commit()
+       connection.commit()
 
-    user_id = cursor.lastrowid
-
-    connection.close()
-
-    return {
+       return {
         "success": True,
         "message": "Account created successfully.",
         "user": {
@@ -177,6 +219,8 @@ async def register_user(
             "email": email
         }
     }
+    finally:
+      connection.close()
 
 @app.post("/api/auth/login")
 async def login_user(
@@ -186,40 +230,51 @@ async def login_user(
     email = email.strip().lower()
 
     connection = get_connection()
-    cursor = connection.cursor()
+    try:
+        cursor = connection.cursor()
 
-    user = cursor.execute(
-        """
-        SELECT id, name, email, password_hash
-        FROM users
-        WHERE email = ?
-        """,
-        (email,)
-    ).fetchone()
+        if DATABASE_URL:
+            user = cursor.execute(
+                """
+                SELECT id, name, email, password_hash
+                FROM users
+                WHERE email = %s
+                """,
+                (email,)
+            ).fetchone()
+        else:
+            user = cursor.execute(
+                """
+                SELECT id, name, email, password_hash
+                FROM users
+                WHERE email = ?
+                """,
+                (email,)
+            ).fetchone()
 
-    connection.close()
+        if not user:
+            return {
+                "success": False,
+                "message": "Invalid email or password."
+            }
 
-    if not user:
+        if not verify_password(password, user["password_hash"]):
+            return {
+                "success": False,
+                "message": "Invalid email or password."
+            }
+
         return {
-            "success": False,
-            "message": "Invalid email or password."
+            "success": True,
+            "message": "Login successful.",
+            "user": {
+                "id": user["id"],
+                "name": user["name"],
+                "email": user["email"]
+            }
         }
-
-    if not verify_password(password, user["password_hash"]):
-        return {
-            "success": False,
-            "message": "Invalid email or password."
-        }
-
-    return {
-        "success": True,
-        "message": "Login successful.",
-        "user": {
-            "id": user["id"],
-            "name": user["name"],
-            "email": user["email"]
-        }
-    }
+    finally:
+        connection.close()
 
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
@@ -284,7 +339,7 @@ async def analyze_career(data: dict):
     return {
         "success": True,
         "analysis": result
-    }    
+    }
 
 @app.post("/api/skill-gap/analyze")
 async def analyze_skill_gap(data: dict):
